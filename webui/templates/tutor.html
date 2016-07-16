@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body {
+            font-size: 200%; 
+        }
+    </style>
+</head>
+
+<body>
+    <p>Hi There, click below to record, then click 'Upload' to submit.</p>
+    <p>Please record {{recorded_count}}/200: ({{syllable_rank}}) {{syllable}}</p>
+
+    <form action="{% url 'upload-audio-url' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ recording_form }}
+<!-- 
+       <input name="syllable" id="syllable" type="hidden" value="{{syllable}}">
+       Tap to record -><input name="audio" id="capture" type="file" accept="audio/*" capture="microphone">
+       When the recording is good, tap here to upload ->
+ -->
+       <input id="submit" type="submit" value="Upload">
+    </form>
+
+</body>
+
+</html>
