@@ -1,0 +1,4 @@
+#!/bin/bash
+exec xvfb-run -a gunicorn --pythonpath /tonetutor/ -e DJANGO_SETTINGS_MODULE=tonetutor.settings \
+	--log-file /var/log/gunicorn_tonetutor.log --log-level=debug \
+    -b 127.0.0.1:8001 tonetutor.wsgi 

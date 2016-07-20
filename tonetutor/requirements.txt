@@ -1,0 +1,19 @@
+# System-level dependencies
+# libav-tools (for avconv)
+# normalize-audio
+
+# Use the distribution versions if these if you can
+#numpy       # Required by scipy
+#scipy
+
+django
+
+git+ssh://gitrepos/opt/gitrepos/ttlib.git@v0.1.1#egg=ttlib==0.1.1
+
+mutagen
+pytaglib    # Requires system-level taglib be installed
+
+dependencies/snack2.2.10/python # Requires system-level python3-tk (Tkinter) is installed
+
+# For deployment
+gunicorn

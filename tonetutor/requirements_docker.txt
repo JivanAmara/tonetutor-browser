@@ -1,0 +1,7 @@
+django
+
+/tonetutor/docker/pip_packages/ttlib-0.1.1.tar.gz
+mutagen
+pytaglib    # Requires system-level taglib be installed
+
+/tonetutor/docker/pip_packages/snack_2.2.10/python # Requires system-level python3-tk (Tkinter) is installed
