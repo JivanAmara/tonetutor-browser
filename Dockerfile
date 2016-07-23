@@ -44,7 +44,6 @@ WORKDIR /
 # --- Django setup
 RUN mkdir /tonetutor-static
 RUN python3 /tonetutor/manage.py collectstatic --noinput
-COPY db.sqlite3 /
 ENV PYTHONPATH=/tonetutor/docker/dependencies/snack_2.2.10/python/
 RUN xvfb-run python3 /tonetutor/manage.py migrate --noinput
 
