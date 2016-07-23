@@ -10,4 +10,5 @@ class RecordingForm(forms.Form):
     #    audio recorder for recording, then populate the field with the name of the recorded file
     recording_widget = \
         forms.ClearableFileInput(attrs={'accept': 'audio/*', 'capture': 'microphone'})
-    recording = forms.FileField()
+    recording = forms.FileField(widget=recording_widget)
+    expected_tone = forms.IntegerField(min_value=1, max_value=5)

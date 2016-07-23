@@ -7,23 +7,39 @@
             font-size: 200%; 
         }
     </style>
+
 </head>
 
 <body>
-    <p>Hi There, click below to record, then click 'Upload' to submit.</p>
-    <p>Please record {{recorded_count}}/200: ({{syllable_rank}}) {{syllable}}</p>
+    <div>
+        <h1>Results</h1>
+        {% if result_tone == None %}
+            <img src='/static/webui/images/blue_question-mark.png' />
+        {% elif result_tone == expected_tone %}
+            {{expected_tone}}: 
+            <img src='/static/webui/images/green_checkmark.png' />
+        {% elif result_tone != expected_tone %}
+            {{expected_tone}}: 
+            <img src='/static/webui/images/red_x.png' />
+        {% endif %}
+    </div>
 
+    <div>Please record tone {{record_tone}}</div>
     <form action="{% url 'upload-audio-url' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ recording_form }}
-<!-- 
-       <input name="syllable" id="syllable" type="hidden" value="{{syllable}}">
-       Tap to record -><input name="audio" id="capture" type="file" accept="audio/*" capture="microphone">
-       When the recording is good, tap here to upload ->
- -->
        <input id="submit" type="submit" value="Upload">
     </form>
 
+    <div>
+        Context Details:
+        <ul>
+            <li>'result_tone': {{result_tone}}</li>
+            <li>'expected_tone': {{expected_tone}}</li>
+            <li>'record_tone': {{record_tone}}</li>
+        </ul>
+    </div>
+    
 </body>
 
 </html>
