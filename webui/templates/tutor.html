@@ -9,6 +9,52 @@
         }
     </style>
     <link rel="stylesheet" type="text/css" href="static/webui/css/tutor.css">
+    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+
+    <script>
+    $(document).ready(function(){
+        if(window.MediaRecorder !== undefined) {
+            navigator.mediaDevices.getUserMedia({
+                audio: true
+            }).then(function (stream) {
+                // do something with the stream
+                var recorder = new MediaRecorder(stream);
+                recorder.addEventListener('dataavailable', function(e) {
+                    // e.data contains the audio data! let's associate it to an <audio> element
+                    var el = document.querySelector('audio');
+                    el.src = URL.createObjectURL(e.data);
+                    var fd = new FormData();
+                    // Get extension
+                    typePieces = e.data.type.split('/');
+                    ext = typePieces[typePieces.length - 1];
+                    fd.append('fname', 'upload.' + ext);
+                    fd.append('data', e.data);
+                    fd.append('csrfmiddlewaretoken', '{{csrf_token}}');
+                    $.ajax({
+                        type: 'POST',
+                        url: "{% url 'upload-audio-url' %}",
+                        data: fd,
+                        processData: false,
+                        contentType: false
+                    }).done(function(data) {
+                        alert("Sent data to {% url 'upload-audio-url' %}");
+                        console.log(data);
+                    });
+                });
+
+                // start recording here...
+                recorder.start();
+                alert('recording started');
+                // and eventually call this to stop the recording, perhaps on the press of a button
+                alert('recording stopped');
+                recorder.stop();
+            });
+        }
+        else {
+            alert('No MediaRecorder support');
+        }
+    });
+    </script>
 </head>
 
 <body>
@@ -34,6 +80,8 @@
         {{ recording_form }}
        <input id="submit" type="submit" value="Upload">
     </form>
+
+    <audio id='audio' controls='' src=''></audio>
 
     <div>
         Context Details:
