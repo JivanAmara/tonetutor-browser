@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'webui',
+    'syllable_samples',
 ]
 
 MIDDLEWARE_CLASSES = [

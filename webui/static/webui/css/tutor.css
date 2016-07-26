@@ -1,0 +1,28 @@
+html {
+    background-color: #555;    
+}
+
+body {
+    border: 1px solid #000;
+    box-shadow: 10px 10px #222;
+    margin: 5%;
+    padding: 5%;
+    background-color: #bbf;
+}
+
+hr {
+    color: 00f;
+}
+
+#results {
+    font-size: 150%;
+}
+#results p {
+    width: 70%;
+    display: inline-block;
+}
+
+
+#results img {
+    width: 10%;
+}

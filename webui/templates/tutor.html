@@ -1,3 +1,4 @@
+{% load static %}
 <html>
 
 <head>
@@ -7,24 +8,27 @@
             font-size: 200%; 
         }
     </style>
-
+    <link rel="stylesheet" type="text/css" href="static/webui/css/tutor.css">
 </head>
 
 <body>
-    <div>
-        <h1>Results</h1>
+    <div id='results'>
         {% if result_tone == None %}
             <img src='/static/webui/images/blue_question-mark.png' />
         {% elif result_tone == expected_tone %}
-            {{expected_tone}}: 
             <img src='/static/webui/images/green_checkmark.png' />
         {% elif result_tone != expected_tone %}
-            {{expected_tone}}: 
             <img src='/static/webui/images/red_x.png' />
         {% endif %}
+        <p>
+        Sounded like tone {{result_tone}} was expecting {{expected_tone}}.
+        </p>
     </div>
 
-    <div>Please record tone {{record_tone}}</div>
+    <hr>
+
+    <div>Please record syllable {{record_syllable}} (tone {{record_tone}})</div>
+    <a href='{% static audio_sample %}'>Listen</a>
     <form action="{% url 'upload-audio-url' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ recording_form }}
@@ -34,9 +38,10 @@
     <div>
         Context Details:
         <ul>
-            <li>'result_tone': {{result_tone}}</li>
-            <li>'expected_tone': {{expected_tone}}</li>
-            <li>'record_tone': {{record_tone}}</li>
+            <li>result_tone: {{result_tone}}</li>
+            <li>expected_tone: {{expected_tone}}</li>
+            <li>record_tone: {{record_tone}}</li>
+            <li>record_syllable: {{record_syllable}}</li>
         </ul>
     </div>
     
