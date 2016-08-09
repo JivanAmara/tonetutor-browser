@@ -32,7 +32,8 @@ RUN ln -s /etc/nginx/sites-available/tonetutor.nginx /etc/nginx/sites-enabled
 # --- Python app dependencies
 #RUN pip3 install -r /tonetutor/tonetutor/requirements_docker.txt
 RUN pip3 install django
-RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.1.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.2.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.1.0.tar.gz
 RUN pip3 install mutagen
 RUN pip3 install pytaglib
 RUN pip3 install gunicorn

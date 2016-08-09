@@ -9,7 +9,7 @@
 docker/dependencies/snack_2.2.10/python/
 
 Django >= 1.9.7
-git+ssh://gitrepos/opt/gitrepos/ttlib.git@v0.2.0#egg=ttlib==0.2.0
+git+ssh://gitrepos/opt/gitrepos/ttlib.git@v0.2.2#egg=ttlib==0.2.2
 git+ssh://gitrepos/opt/gitrepos/syllable_samples@v0.1.0#egg=syllable-samples==0.1.0
 mutagen
 pytaglib    # Requires system-level taglib be installed

@@ -1,0 +1,179 @@
+{% load static %}
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body {
+            font-size: 200%; 
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="static/webui/css/mrtutor.css">
+    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+
+    <script>
+    $(document).ready(function(){
+        var audio_example_url = null;
+        var audio_example_tone = null;
+        // This is a flag so recorded data is ignored if next is clicked during recording.
+        var next_clicked = false;   
+        var recording = false;
+
+        function getSyllable() {
+            $.ajax({
+                type: 'GET',
+                url: '{% url "get-syllable" %}',
+                dataType: 'json'
+            }).done(function(data){
+                audio_example_url = data.url;
+                audio_example_tone = data.tone;
+                example_audio = document.getElementById('example_audio');
+                example_audio.src = audio_example_url;
+                example_audio.load();
+                prompt = document.getElementById('prompt');
+                prompt.innerHTML = data.display;
+            });
+        }
+
+        getSyllable();
+        
+        function whenRecordingReady(e) {
+            if (next_clicked) {
+                next_clicked = false;
+                return;
+            }
+            // e.data contains the audio data! let's associate it to an <audio> element
+            var el = document.getElementById('attempt_audio');
+            //document.querySelector('audio');
+            el.src = URL.createObjectURL(e.data);
+            var fd = new FormData();
+            // Get extension
+            typePieces = e.data.type.split('/');
+            ext = typePieces[typePieces.length - 1];
+            fd.append('attempt', e.data);
+            fd.append('csrfmiddlewaretoken', '{{csrf_token}}');
+            fd.append('extension', ext);
+
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'tone-check' %}",
+                data: fd,
+                processData: false,
+                contentType: false,
+                dataType: 'json'
+            }).done(function(data) {
+                console.log(data);
+                if (data.status) {
+                    $('#result_section img').hide(0);
+                    
+                    if (data.tone == null) {
+                        $('#question').fadeIn(500);
+                    }
+                    else if (data.tone == audio_example_tone) {
+                        $('#success').fadeIn(500);                        
+                    }
+                    else if (data.tone != audio_example_tone) {
+                        $('#failure').fadeIn(500);
+                    }
+
+                }
+            });
+        }
+        
+        if(window.MediaRecorder !== undefined) {
+            navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
+                // do something with the stream
+                recorder = new MediaRecorder(stream);
+                recorder.addEventListener('dataavailable', whenRecordingReady);
+            });
+        }
+        else {
+            alert('No MediaRecorder support');
+        }
+
+        function startRecording() {
+            recorder.start();
+            recording = true;
+            $('#attempt').hide(0);
+            var rb = document.getElementById('record_button');
+            rb.style.backgroundColor = 'f77';
+        }
+        
+        function stopRecording() {
+            recorder.stop();
+            recording = false;
+            $('#attempt').show(0);
+            var rb = document.getElementById('record_button');
+            rb.style.backgroundColor = '';
+        }
+        
+        $('#help_button').click(function(){
+            $('#help_text').toggle(0);
+        });
+        
+        $('#record_button').click(function(){
+            rb_color = null;
+            if (recording) {
+                stopRecording();
+            }
+            else {
+                startRecording();
+            }
+        });
+
+        $('#next_button').click(function(){
+            if (recording) {
+                next_clicked = true;
+                stopRecording();
+            }
+            $('#result_section img').hide(0);
+            $('#question').show(0);
+            $('#attempt').hide(0);
+            getSyllable();
+        });
+        
+    });
+    </script>
+</head>
+
+<body>
+    <div id='help_container'>
+        <a id='help_button'>help</a>
+        <div id='help_text'>
+            <p>Instructions (click help again to hide):</p>
+            <hr>
+            <p>Click record, say the syllable shown then click record again to stop recording.</p>
+            <p>The result will be a green checkmark if you pronounced correctly, a red 'x' if
+                you pronounced incorrectly, or a blue question mark if ToneTutor can't tell.
+            </p>
+            <p>You can hear a native speaker pronounce the syllable by clicking the play button
+                under 'Example'.  After you've recorded your attempt, you can listen to
+                yourself by clicking the play button under 'You'.
+            </p>
+            <p>When you're ready to move on, click 'Next'.</p>
+            <hr>
+        </div>
+    </div>
+
+    <div id='content'>
+        <div id='controls_container'>
+            <div id='prompt'></div>
+            <a id='record_button'>Record</a>
+            <a id='next_button'>Next</a>
+        </div>
+    
+        <div id='result_section'>
+            <div id='example'>
+                Example<br><audio id='example_audio' controls='' ></audio>
+            </div>
+            <img id='question' src='/static/webui/images/blue_question-mark.png' />
+            <img id='success' src='/static/webui/images/green_checkmark.png' />
+            <img id='failure' src='/static/webui/images/red_x.png' />
+            <div id='attempt'>
+                You<br><audio id='attempt_audio' controls='' ></audio>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

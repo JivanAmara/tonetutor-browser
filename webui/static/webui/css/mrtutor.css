@@ -1,0 +1,114 @@
+html {
+    background-color: #555;    
+}
+
+body {
+    border: 1px solid #000;
+    box-shadow: 10px 10px #222;
+    margin: 5%;
+    background-color: #bbf;
+}
+
+hr {
+    color: 00f;
+}
+
+#prompt {
+    font-size: 150%;
+    font-weight: 500;
+    text-align: center;
+}
+
+#help_container {
+    width: 100%;
+    text-align: right;
+}
+
+#help_button {
+    font-size: 50%;
+    padding: 1%;
+}
+
+#help_text {
+    display: none;
+    padding: 3%;
+    text-align: left;
+}
+
+#content {
+}
+
+/* --- Controls Section --- */
+#controls_container {
+    display: inline-block;
+    vertical-align: top;
+    width: 45%;
+    padding: 0 3% 3% 5%;
+}
+
+#record_button {
+    display: block;
+    border: 1px solid black;
+    margin: 2%;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 2px 5px black;
+}
+
+#record_button:active {
+    box-shadow: 0px 0px black;
+    position: relative;
+    top: 5px;
+    left: 2px;
+}
+
+#next_button {
+    display: block;
+    border: 1px solid black;
+    margin: 2%;
+    padding: 5px;
+    text-align: center;
+    box-shadow: 2px 5px black;
+}
+
+#next_button:active {
+    box-shadow: 0px 0px black;
+    position: relative;
+    top: 5px;
+    left: 2px;
+}
+
+
+/* --- Result Section --- */
+#result_section {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 100%;
+    width: 35%;
+    text-align: center;
+    padding: 0 3% 3% 0%;
+}
+
+#result_section audio {
+    width: 75%;
+}
+
+#result_section img {
+    width: 25%;
+}
+
+#attempt {
+    display: none;
+}
+
+#question {
+    display: inline;
+}
+
+#success {
+    display: none;
+}
+
+#failure {
+    display: none;
+}
