@@ -16,12 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.conf import settings
 from django.contrib import admin
-from webui.views import TutorPageView, MRTutorView, ToneCheck, GetSyllableView
+from webui.views import TutorPageView, MRTutorView, ToneCheck, GetSyllableView, HomePageView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', TutorPageView.as_view(), name='upload-audio-url'),
+    url(r'^$', HomePageView.as_view(), name='homepage-url'),
     url(r'^tutor$', MRTutorView.as_view(), name='tutor-url'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable$', GetSyllableView.as_view(), name='get-syllable'),

@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="static/webui/css/homepage.css">
+    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+
+    <script>
+    $(document).ready(function(){
+        if(window.MediaRecorder == undefined) {
+            $('#unsupported').show(0);
+        }
+        else {
+            $('#supported').show(0);
+        }
+    });
+    </script>
+</head>
+
+<body>
+    <p>The browser you're using is '{{browser_family}}' version '{{browser_version_string}}'</p>
+    <div id='unsupported'>
+        <p>This browser does not have the features necessary to record audio.
+            Please install one of the browsers listed below to use ToneTutor.
+        </p>
+        
+        <ul>
+            <li><a href='https://www.google.com/chrome/browser/desktop/index.html'>Chrome (Desktop)</a></li>
+            <li><a href='https://www.mozilla.org/en-US/firefox/new/'>Firefox (Desktop)</a></li>
+
+            <li><a href='https://www.mozilla.org/en-US/firefox/android/'>Firefox for Android</a></li>
+            <li><a href='https://www.mozilla.org/en-US/firefox/ios/'>Firefox for iOS</a></li>            
+        </ul>
+        
+    </div>
+    <p id='supported'>This browser supports recording from the microphone,
+        <a href='{% url "tutor-url" %}'>click here to visit the tutor</a> </p>       
+</body>
+
+</html>

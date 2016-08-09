@@ -23,6 +23,29 @@ from webui.forms import RecordingForm
 from webui.models import SyllableAttempt
 
 
+class HomePageView(TemplateView):
+    template_name = 'webui/homepage.html'
+    context_updates = {}
+
+    def get(self, request, *args, **kwargs):
+        # Get browser details
+        browser_family = request.user_agent.browser.family
+        browser_version = request.user_agent.browser.version
+        browser_version_string = request.user_agent.browser.version_string
+
+        self.context_updates = {
+            'browser_family': browser_family,
+            'browser_version': browser_version,
+            'browser_version_string': browser_version_string,
+        }
+
+        return TemplateView.get(self, request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = TemplateView.get_context_data(self, **kwargs)
+        context.update(self.context_updates)
+        return context
+
 class TutorPageView(TemplateView):
     template_name = 'tutor.html'
     expected_tone = None
