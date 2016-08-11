@@ -31,19 +31,29 @@
     <script>
     $(document).ready(function(){
         // Ensure that we have MediaRecorder support.
+        var recorderInaccessibleMsg = 
+            "Problem: Couldn't access your microphone.\n" +
+            "Please make sure it's connected and refresh this page.\n" +
+            "Choose to share it when prompted.";
         if(window.MediaRecorder !== undefined) {
             navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
                 // do something with the stream
                 recorder = new MediaRecorder(stream);
                 recorder.addEventListener('dataavailable', checkRecording);
             }).catch(function(error) {
-                alert(error);
+                alert(recorderInaccessibleMsg)
             });
         }
         else {
             alert('No MediaRecorder support');
             window.location = '{% url "homepage-url" %}';
         }
+
+        window.setTimeout(function(){
+            if (recorder == null) {
+                alert(recorderInaccessibleMsg);
+            }            
+        }, 5000);
 
         getSyllable('example_audio', 'prompt', syllable);
         
