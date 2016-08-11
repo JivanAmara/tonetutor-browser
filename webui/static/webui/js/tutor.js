@@ -48,6 +48,11 @@ function checkRecording(e) {
         next_clicked = false;
         return;
     }
+    
+    // show the spinner in case of a long api request.
+    $('#result_section img').hide(0);
+    $('#spinner').show(0);
+
     // e.data contains the audio data! let's associate it to an <audio> element
     var el = document.getElementById('attempt_audio');
     //document.querySelector('audio');
