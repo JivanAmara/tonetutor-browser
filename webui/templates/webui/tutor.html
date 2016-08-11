@@ -1,0 +1,118 @@
+{% load static %}
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body {
+            font-size: 200%; 
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="static/webui/css/tutor.css">
+    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+
+    <!-- These are variables to share between inline script below and tutor.js  -->
+    <script>
+        var csrfToken = '{{csrf_token}}';
+        var getSyllableUrl = '{% url "get-syllable" %}';
+        var checkSyllableUrl = '{% url "tone-check" %}';
+        // This is a MediaRecorder instance to record the user's pronunciation attempt.
+        var recorder = null;
+        // Indicates if the MediaRecorder instance is currently recording from the mic.
+        var recorder_state = {'recording': false};
+        // Current syllable to prompt the user with.
+        var syllable = {'tone': null};
+        // This is a flag to indicate recorded data should be ignored if next is
+        //  clicked during recording.
+        var next_clicked = false;
+    </script>
+    <script src='{% static "webui/js/tutor.js" %}'></script>
+
+    <script>
+    $(document).ready(function(){
+        // Ensure that we have MediaRecorder support.
+        if(window.MediaRecorder !== undefined) {
+            navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
+                // do something with the stream
+                recorder = new MediaRecorder(stream);
+                recorder.addEventListener('dataavailable', checkRecording);
+            }).catch(function(error) {
+                alert(error);
+            });
+        }
+        else {
+            alert('No MediaRecorder support');
+            window.location = '{% url "homepage-url" %}';
+        }
+
+        getSyllable('example_audio', 'prompt', syllable);
+        
+        $('#help_button').click(function(){
+            $('#help_text').toggle(0);
+        });
+        
+        $('#record_button').click(function(){
+            rb_color = null;
+            if (recorder_state.recording) {
+                stopRecording(recorder, recorder_state);
+            }
+            else {
+                startRecording(recorder, recorder_state);
+            }
+        });
+
+        $('#next_button').click(function(){
+            if (recorder_state.recording) {
+                next_clicked = true;
+                stopRecording(recorder);
+            }
+            $('#result_section img').hide(0);
+            $('#question').show(0);
+            $('#attempt').hide(0);
+            getSyllable('example_audio', 'prompt', syllable);
+        });
+    });
+    </script>
+</head>
+
+<body>
+    <div id='help_container'>
+        <a id='help_button'>help</a>
+        <div id='help_text'>
+            <p>Instructions (click help again to hide):</p>
+            <hr>
+            <p>Click record, say the syllable shown then click record again to stop recording.</p>
+            <p>The result will be a green checkmark if you pronounced correctly, a red 'x' if
+                you pronounced incorrectly, or a blue question mark if ToneTutor can't tell.
+            </p>
+            <p>You can hear a native speaker pronounce the syllable by clicking the play button
+                under 'Example'.  After you've recorded your attempt, you can listen to
+                yourself by clicking the play button under 'You'.
+            </p>
+            <p>When you're ready to move on, click 'Next'.</p>
+            <hr>
+        </div>
+    </div>
+
+    <div id='content'>
+        <div id='controls_container'>
+            <div id='prompt'></div>
+            <a id='record_button'>Record</a>
+            <a id='next_button'>Next</a>
+        </div>
+    
+        <div id='result_section'>
+            <div id='example'>
+                Example<br><audio id='example_audio' controls='' ></audio>
+            </div>
+            <img id='question' src='/static/webui/images/blue_question-mark.png' />
+            <img id='success' src='/static/webui/images/green_checkmark.png' />
+            <img id='failure' src='/static/webui/images/red_x.png' />
+            <div id='attempt'>
+                You<br><audio id='attempt_audio' controls='' ></audio>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -46,60 +46,6 @@ class HomePageView(TemplateView):
         context.update(self.context_updates)
         return context
 
-class TutorPageView(TemplateView):
-    template_name = 'tutor.html'
-    expected_tone = None
-    audio_sample = None
-    result_tone = None
-    record_tone = None
-
-    def get(self, request, *args, **kwargs):
-        user = request.user if hasattr(request, 'user') else None
-        sound, tone, display, path = get_random_sample()
-        self.record_tone = tone
-        self.record_syllable = display
-        self.audio_sample = path
-
-        self.form = RecordingForm(initial={'expected_tone': tone})
-        return TemplateView.get(self, request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        self.form = RecordingForm(request.POST, request.FILES)
-        if self.form.is_valid():
-            recording = self.form.cleaned_data['recording']
-            extension = recording.name.split('.')[-1]
-            user = request.user if type(request) == User else None
-            print(type(user))
-            SyllableAttempt.objects.create(recording=recording, user=user)
-
-            with NamedTemporaryFile(suffix='.{}'.format(extension)) as original:
-                with NamedTemporaryFile(suffix='.wav') as normalized:
-                    for chunk in recording.chunks():
-                        original.write(chunk)
-                    original.flush()
-                    normalize_pipeline(original.name, normalized.name)
-                    sample_rate, wave_data = scipy.io.wavfile.read(normalized.name)
-                    sample_characteristics = generate_all_characteristics(wave_data, sample_rate)
-
-                    tr = ToneRecognizer()
-                    tone = tr.get_tone(sample_characteristics)
-            self.result_tone = tone
-            self.expected_tone = self.form.cleaned_data['expected_tone']
-
-        return self.get(self, request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        cd = TemplateView.get_context_data(self, **kwargs)
-        cd.update({
-            'recording_form': self.form,
-            'result_tone': self.result_tone,
-            'expected_tone': self.expected_tone,
-            'record_tone': self.record_tone,
-            'record_syllable': self.record_syllable,
-            'audio_sample': self.audio_sample,
-        })
-        return cd
-
 class ToneCheck(View):
     def post(self, request, *args, **kwargs):
         attempt = request.FILES['attempt']
@@ -145,8 +91,8 @@ class GetSyllableView(View):
         return resp
 
 
-class MRTutorView(TemplateView):
-    template_name = 'mrtutor.html'
+class TutorView(TemplateView):
+    template_name = 'webui/tutor.html'
 
     def get(self, request, *args, **kwargs):
         user = request.user if hasattr(request, 'user') else None
