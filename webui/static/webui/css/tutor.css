@@ -102,7 +102,7 @@ hr {
 }
 
 #question {
-    display: inline;
+    display: none;
 }
 
 #success {
@@ -111,4 +111,10 @@ hr {
 
 #failure {
     display: none;
+}
+
+#spinner {
+    display: none;
+}
+
 }
