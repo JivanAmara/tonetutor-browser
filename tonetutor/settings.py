@@ -15,8 +15,9 @@ import os
 # Build paths inside the project like this: os.path.join(PROJECT_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-MEDIA_ROOT = '/tonerecorder-media/'
+MEDIA_ROOT = '/mnt/data-volume/tonetutor-media/'
 MEDIA_URL = '/media/'
+SYLLABLE_AUDIO_DIR = 'audio-files'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -40,9 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'tonerecorder',
+    'hanzi_basics',
+
     'webui',
     'syllable_samples',
-    'django_user_agents'
+    'django_user_agents',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,11 +85,14 @@ WSGI_APPLICATION = 'tonetutor.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'webvdc',  # Or path to database file if using sqlite3.
+        'USER': 'webvdc',  # Not used with sqlite3.
+        'PASSWORD': 'webvdc',  # Not used with sqlite3.
+        'HOST': 'database-host',  # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     }
 }
 

@@ -7,20 +7,21 @@ import uuid
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic.base import View
+from hanzi_basics.models import PinyinSyllable
 import scipy.io.wavfile
 from syllable_samples.interface import get_random_sample
+from tonerecorder.models import RecordedSyllable, create_audio_path
 from ttlib.characteristics.interface import generate_all_characteristics
 from ttlib.normalization.interface import normalize_pipeline
 from ttlib.recognizer import ToneRecognizer
-from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from webui.forms import RecordingForm
-from webui.models import SyllableAttempt
 
 
 class HomePageView(TemplateView):
@@ -46,21 +47,37 @@ class HomePageView(TemplateView):
         context.update(self.context_updates)
         return context
 
+
 class ToneCheck(View):
+    ''' *brief*: provides a web-api to check the predicted tone of an audio sample.
+        *note*: Saves the audio sample for later analsis in model RecordedSyllable.
+        *input*: POST with file 'attempt' and values 'extension', 'expected_sound', 'expected_tone',
+            'is_native'.
+        *return*: JSON-encoded object with 'status' and 'tone' attributes.
+            'status' is a boolean indicating if the call was successful.
+            'tone' is an integer 1-5 indicating the tone or null indicating that the predictor
+                can't tell which tone it is.
+    '''
     def post(self, request, *args, **kwargs):
         attempt = request.FILES['attempt']
         extension = request.POST['extension']
+        expected_sound = request.POST['expected_sound']
+        expected_tone = request.POST['expected_tone']
+        is_native = request.POST.get('is_native', False)
 
         user = request.user if type(request.user) == User else None
-        username = user.username if user else 'none'
-        SyllableAttempt.objects.create(recording=attempt, user=user)
 
-        with NamedTemporaryFile(suffix='.{}'.format(extension)) as original:
+        s = PinyinSyllable.objects.get(sound=expected_sound, tone=expected_tone)
+        rs = RecordedSyllable(native=is_native, user=user, syllable=s, file_extension=extension)
+        original_path = rs.create_audio_path('original')
+        rs.audio_original = original_path
+        rs.save()
+        with open(original_path, 'wb') as f:
+            f.write(attempt.read())
+
+        with open(original_path, 'rb') as original:
             with NamedTemporaryFile(suffix='.wav') as normalized:
-                for chunk in attempt.chunks():
-                    original.write(chunk)
-                original.flush()
-                normalize_pipeline(original.name, normalized.name)
+                normalize_pipeline(original_path, normalized.name)
                 sample_rate, wave_data = scipy.io.wavfile.read(normalized.name)
                 sample_characteristics = generate_all_characteristics(wave_data, sample_rate)
 
