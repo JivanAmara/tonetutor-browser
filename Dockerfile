@@ -18,6 +18,7 @@ RUN apt-get install -y xvfb
 RUN apt-get install -y libsnack2
 RUN apt-get install -y libav-tools
 RUN apt-get install -y normalize-audio
+RUN apt-get install -y libpq-dev
 
 RUN mkdir /tonetutor
 COPY docker /tonetutor/docker/
@@ -37,6 +38,9 @@ RUN pip3 install pytaglib
 RUN pip3 install django-user_agents==0.3.0
 RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.2.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.1.4.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.1.tar.gz
+RUN pip3 install psycopg2
 RUN pip3 install gunicorn
 
 WORKDIR /tonetutor/docker/dependencies/snack_2.2.10/python/
@@ -46,11 +50,14 @@ WORKDIR /
 # --- Django setup
 RUN mkdir /tonetutor-static
 RUN python3 /tonetutor/manage.py collectstatic --noinput
-ENV PYTHONPATH=/tonetutor/docker/dependencies/snack_2.2.10/python/
-RUN xvfb-run python3 /tonetutor/manage.py migrate --noinput
+
+# --- Scripts to run at container start
+# Unfortunately this is preventing startup.  Migrations will have to be done manually.
+#COPY docker/my_init.d/migrate_django_db.sh /etc/my_init.d/
 
 # --- Services to start at container start
 COPY docker/service /etc/service
 
 # Run With:
-# docker run -dit -p <host_port>:80 <image>
+# docker run -dit -p <host_port>:80 -v /mnt/data-volume/tonetutor-media/:/mnt/data-volume/tonetutor-media/ --add-host=database-host:<host-ip> <image>
+# Enter the container and run migrations 'xvfb-run -a python3 /tonetutor/manage.py migrate --noinput'

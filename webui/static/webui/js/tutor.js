@@ -32,6 +32,10 @@ function getSyllable(example_audio_id, prompt_id, syllable) {
         dataType: 'json'
     }).done(function(data){
         syllable.tone = data.tone;
+        syllable.sound = data.sound;
+        syllable.display = data.display;
+        syllable.url = data.url;
+        
         example_audio = document.getElementById(example_audio_id);
         example_audio.src = data.url;
         example_audio.load();
@@ -64,6 +68,8 @@ function checkRecording(e) {
     fd.append('attempt', e.data);
     fd.append('csrfmiddlewaretoken', csrfToken);
     fd.append('extension', ext);
+    fd.append('expected_sound', syllable.sound);
+    fd.append('expected_tone', syllable.tone);
 
     $.ajax({
         type: 'POST',

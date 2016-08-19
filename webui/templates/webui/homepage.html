@@ -18,26 +18,57 @@
 </head>
 
 <body>
-    <p>The browser you're using is '{{browser_family}}' version '{{browser_version_string}}'</p>
-    <div id='unsupported'>
-        <p>This browser does not have the features necessary to record audio.
-            Please install one of the browsers listed below to use ToneTutor.
-        </p>
-        
-        <ul>
-            <li><a href='https://www.google.com/chrome/browser/desktop/index.html'>Chrome (Desktop)</a></li>
-            <li><a href='https://www.mozilla.org/en-US/firefox/new/'>Firefox (Desktop)</a></li>
+    <div id='title'>Welcome to the ToneTutor!</div>
 
-            <li><a href='https://www.mozilla.org/en-US/firefox/android/'>Firefox for Android</a></li>
-            <li><a href='https://www.mozilla.org/en-US/firefox/ios/'>Firefox for iOS</a></li>            
-        </ul>
-        
+    <div id='content'>
+        <div id='tone-animation'>
+            <a href='{% url "tutor-url" %}'>
+                <img src='{% static "webui/images/tone_animation.gif" %}'>
+            </a>
+        </div>
+    
+        <div id='unsupported'>
+            <p>The browser you're using is '{{browser_family}}' version '{{browser_version_string}}'</p>
+            <p>This browser does not have the features necessary to record audio.
+                In order to use ToneTutor please install one of the browsers listed below:
+            </p>
+            
+            <ul>
+                <li><a href='https://www.google.com/chrome/browser/desktop/index.html'>Chrome (Desktop)</a></li>
+                <li><a href='https://www.mozilla.org/en-US/firefox/new/'>Firefox (Desktop)</a></li>
+    
+                <li><a href='https://www.mozilla.org/en-US/firefox/android/'>Firefox for Android</a></li>
+                <li><a href='https://www.mozilla.org/en-US/firefox/ios/'>Firefox for iOS</a></li>            
+            </ul>
+            
+        </div>
+        <p id='supported'>
+            <a href='{% url "tutor-url" %}'>Take me to the ToneTutor</a>.
+            Please note that you will be prompted to share your microphone.
+        </p>
+        <p>Learning to pronounce the tones in Mandarin is one of the most difficult parts
+            of learning Mandarin, second only to learning to write the characters themselves.
+            ToneTutor is a simple tool for the beginning learner to get fast feedback on their
+            pronunciation of tones for single pinyin syllables.  This will give your learning
+            a speed-boost through the initial challenges.
+        </p>
+        <p> Don't spend too much time on one syllable.  If you can't get the pronunciation right
+            after 6-8 tries, move on.  It will come up again after you've strengthen your skills.
+        </p> 
+        <p>
+            In ToneTutor, since they don't provide the same challenge as pronouncing tones,
+            the sounds themselves aren't graded, only your pronunciation of the
+            tones.  For example, if prompted with "jì" and you say "yòu" correctly you'll
+            get a green light to move to the next.  Stay tuned for a similar tool providing
+            feedback on tone-pair pronunciation.
+        </p>
+                
+        <p><span style='font-size: 120%'>How does it work?</span> Many recordings of native
+            speakers pronouncing these syllables have been analyzed using a custom
+            machine-learning algorithm to identify tones from audio files.  This analysis
+            results in a model which when given an audio file indicates which tone it is.
+        </p>
     </div>
-    <p id='supported'>This browser supports recording from the microphone,
-        <a href='{% url "tutor-url" %}'>click here to visit the tutor</a>.
-        You will be prompted to share your microphone so your pronunciation attempts
-        can be graded.
-    </p>       
 </body>
 
 </html>

@@ -1,12 +1,16 @@
 # System-level dependencies
 # libav-tools (for avconv)
 # normalize-audio
+# libpq-dev (for deployment; pip package psycopg2 needs this to build) 
 
 # Use the distribution versions if these if you can
 #numpy       # Required by scipy
 #scipy
 
 docker/dependencies/snack_2.2.10/python/
+
+git+ssh://gitrepos/opt/gitrepos/tonerecorder.git@v1.1.0#egg=tonerecorder==1.1.0
+git+ssh://gitrepos/opt/gitrepos/hanzi_basics.git@v1.1.2#egg=hanzi-basics==1.1.2
 
 Django >= 1.9.7
 git+ssh://gitrepos/opt/gitrepos/ttlib.git@v0.2.2#egg=ttlib==0.2.2
