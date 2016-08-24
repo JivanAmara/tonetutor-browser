@@ -42,6 +42,7 @@ RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.1.tar.gz
 RUN pip3 install psycopg2
 RUN pip3 install gunicorn
+RUN pip3 install django-registration==2.1.2
 
 WORKDIR /tonetutor/docker/dependencies/snack_2.2.10/python/
 RUN python3 setup.py install
@@ -59,5 +60,5 @@ RUN python3 /tonetutor/manage.py collectstatic --noinput
 COPY docker/service /etc/service
 
 # Run With:
-# docker run -dit -p <host_port>:80 -v /mnt/data-volume/tonetutor-media/:/mnt/data-volume/tonetutor-media/ --add-host=database-host:<host-ip> <image>
+# docker run -e SECRET_KEY=<secret-key> -e EMAIL_USER=<email-user> -e EMAIL_PASS=<email-pass> -dit -p <host_port>:80 -v /mnt/data-volume/tonetutor-media/:/mnt/data-volume/tonetutor-media/ --add-host=database-host:<host-ip> <image>
 # Enter the container and run migrations 'xvfb-run -a python3 /tonetutor/manage.py migrate --noinput'

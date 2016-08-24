@@ -20,6 +20,7 @@ pytaglib    # Requires system-level taglib be installed
 
 django-user_agents
 
+django-registration==2.1.2
 
 # For deployment
 gunicorn

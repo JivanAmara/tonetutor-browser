@@ -1,14 +1,3 @@
-html {
-    background-color: #555;    
-}
-
-body {
-    border: 1px solid #000;
-    box-shadow: 10px 10px #222;
-    margin: 5%;
-    background-color: #bbf;
-    padding: 2%;
-}
 #title {
     font-size: 250%;
     text-align: center;

@@ -1,0 +1,19 @@
+{% load static %}
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
+    <script type='text/javascript'>
+        window.setTimeout(function(){window.location='{% url "homepage-url" %}';}, 5000)
+    </script>
+</head>
+
+<body>
+    <title>Logged Out</title>
+    <p>You have been logged out</p>
+    <p>If you aren't redirected automatically in five seconds,
+        <a href='{% url "homepage-url" %}'>Click here to return to the ToneTutor homepage</a>.
+    </p>
+</body>
+
+</html>

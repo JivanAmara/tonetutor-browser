@@ -58,6 +58,10 @@ class ToneCheck(View):
             'tone' is an integer 1-5 indicating the tone or null indicating that the predictor
                 can't tell which tone it is.
     '''
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         attempt = request.FILES['attempt']
         extension = request.POST['extension']
@@ -92,6 +96,10 @@ class ToneCheck(View):
 
 
 class GetSyllableView(View):
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         sound, tone, display, path = get_random_sample()
 
@@ -111,8 +119,13 @@ class GetSyllableView(View):
 class TutorView(TemplateView):
     template_name = 'webui/tutor.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return View.dispatch(self, request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
-        user = request.user if hasattr(request, 'user') else None
+        user = request.user
+        print(user.username)
         sound, tone, display, path = get_random_sample()
         self.record_tone = tone
         self.record_syllable = display

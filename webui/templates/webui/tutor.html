@@ -3,12 +3,9 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style type="text/css">
-        body {
-            font-size: 200%; 
-        }
-    </style>
-    <link rel="stylesheet" type="text/css" href="static/webui/css/tutor.css">
+
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "webui/css/tutor.css" %}'>
     <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
 
     <!-- These are variables to share between inline script below and tutor.js  -->
@@ -115,10 +112,10 @@
             <div id='example'>
                 Example<br><audio id='example_audio' controls='' ></audio>
             </div>
-            <img id='question' src='/static/webui/images/blue_question-mark.png' />
-            <img id='success' src='/static/webui/images/green_checkmark.png' />
-            <img id='failure' src='/static/webui/images/red_x.png' />
-            <img id='spinner' src='/static/webui/images/circular_spinner.gif' />
+            <img id='question' src='{% static "webui/images/blue_question-mark.png" %}' />
+            <img id='success' src='{% static "webui/images/green_checkmark.png" %}' />
+            <img id='failure' src='{% static "webui/images/red_x.png" %}' />
+            <img id='spinner' src='{% static "webui/images/circular_spinner.gif" %}' />
             <div id='attempt'>
                 You<br><audio id='attempt_audio' controls='' ></audio>
             </div>

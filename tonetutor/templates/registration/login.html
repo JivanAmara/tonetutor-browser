@@ -1,0 +1,23 @@
+{% load static %}
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
+</head>
+
+<body>
+    {% if form.errors %}
+        {% for error in form.errors.all %}
+            {{error}}
+        {% endfor %}
+    {% endif %}
+
+    <form action='{% url "auth_login" %}' method='POST'>
+        {% csrf_token %}
+        {{form}}
+        <input type='hidden' name='next' value='{{next}}'/>
+        <input type='submit'/>
+    </form>
+</body>
+
+</html>

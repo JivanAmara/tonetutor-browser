@@ -3,6 +3,7 @@ django
 mutagen
 pytaglib    # Requires system-level taglib be installed
 django-user_agents==0.3.0
+django-registration==2.1.2
 
 /tonetutor/docker/hanzi-basics-1.1.2.tar.gz # Dependency of tonerecorder
 /tonetutor/docker/tonerecorder-1.1.1.tar.gz # For RecordedSyllable model.

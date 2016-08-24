@@ -13,18 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
 from django.conf import settings
+from django.conf.urls import url, include
 from django.contrib import admin
-from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+
+from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomePageView.as_view(), name='homepage-url'),
-    url(r'^tutor$', TutorView.as_view(), name='tutor-url'),
+    url(r'^tutor/?$', TutorView.as_view(), name='tutor-url'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable$', GetSyllableView.as_view(), name='get-syllable'),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 ]
 
 if settings.DEBUG:
