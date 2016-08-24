@@ -12,9 +12,20 @@
         {% endfor %}
     {% endif %}
 
+    <p class='errornote'>
+        {% for error in form.errors.values %}
+            {{error}}
+        {% endfor %}
+    </p>
+
     <form action='{% url "auth_login" %}' method='POST'>
         {% csrf_token %}
-        {{form}}
+        {% for field in form %}
+            <div class="fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+            </div>
+        {% endfor %}
         <input type='hidden' name='next' value='{{next}}'/>
         <input type='submit'/>
     </form>

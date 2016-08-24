@@ -1,7 +1,7 @@
 Please click on the link below to complete the registration of {{user.username}} at
 {{site.name}}:
 
-http://{{site.domain}}/{% url "registration_activate" activation_key %}
+http://{{site.domain}}{% url "registration_activate" activation_key %}
 
 If your email client doesn't render it as clickable, please copy and
 paste it into your browser to complete the registration process.

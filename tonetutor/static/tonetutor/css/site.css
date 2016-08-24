@@ -1,7 +1,6 @@
 html {
     background-color: #555;    
 }
-
 body {
     border: 1px solid #000;
     box-shadow: 10px 10px #222;
@@ -9,4 +8,10 @@ body {
     background-color: #bbf;
     padding: 2%;
 }
-
+.fieldWrapper {
+    width: 30em;
+    text-align: right;
+}
+.fieldWrapper label {
+    width: 50%;
+}

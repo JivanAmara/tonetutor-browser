@@ -11,11 +11,16 @@ Context includes: {{form}} [1]
 <body>
     <div id='title'>Register to use ToneTutor</div>
 
-    <div id='content'>
+    <div id='content' style='text-align: right;'>
         <p class='errornote'></p>
         <form method='POST' action='{% url "registration_register" %}'>
             {% csrf_token %}
-            {{form}}
+            {% for field in form %}
+                <div class="fieldWrapper">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }}
+                </div>
+            {% endfor %}
             <input type='submit' />
         </form>
     </div>
