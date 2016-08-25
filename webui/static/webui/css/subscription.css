@@ -1,0 +1,32 @@
+#spinner {
+    display: none;
+    height: 1em;
+}
+
+#payment-form {
+    padding-top: 5%;
+    text-align: right;
+}
+
+.form-row {
+    padding-left: 50%;
+    width: 40%;
+}
+
+#submit-payment {
+    text-align: right;
+    padding-left: 50%;
+    padding-top: 5%;
+    width: 40%;
+}
+#submit-text {
+    padding: 2%;
+    border: 2px solid grey;
+}
+#submit-text:hover {
+    background: #555;
+}
+.payment-errors {
+    color: #A33;
+    font-size: 130%;
+}

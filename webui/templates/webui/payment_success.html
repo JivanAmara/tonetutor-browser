@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <title>ToneTutor Subscription Payment Successful</title>
+    <meta name='keywords' content='' />
+    <meta name='description' content='' />
+    <link href='{% static "tonetutor/css/site.css" %}' rel='stylesheet' type='text/css' media='all' />
+</head>
+
+<body>
+    <div id='col-right'>
+        {% if success %}
+            Purchase success!
+            <p>Congratulations, your subscription has been extended from {{begin_date}} - {{end_date}}.</p>
+            <a href='{% url "tutor-url" %}'>Click here to visit the ToneTutor</a>
+        {% else %}
+            Purchase failure.
+            <a href='{% url "subscription" %}'>Click here to try again</a>
+            Error Details:<br/>
+            {{error_msg}}
+        {% endif %}
+    </div>
+</body>
+</html>
