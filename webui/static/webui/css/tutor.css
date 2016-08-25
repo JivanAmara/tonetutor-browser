@@ -1,5 +1,4 @@
 body {
-    font-size: 200%;
 }
 
 hr {
@@ -18,17 +17,18 @@ hr {
 }
 
 #help_button {
-    font-size: 50%;
     padding: 1%;
 }
 
 #help_text {
+    font-size: 200%;
     display: none;
     padding: 3%;
     text-align: left;
 }
 
 #content {
+    font-size: 200%;
 }
 
 /* --- Controls Section --- */

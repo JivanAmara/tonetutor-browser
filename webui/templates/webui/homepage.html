@@ -1,4 +1,5 @@
 {% load static %}
+
 <html>
 
 <head>
@@ -21,11 +22,17 @@
 <body>
     <div id='title'>Welcome to the ToneTutor!</div>
 
+    {% include "tonetutor/registration_menu.html" %}
+    
     <div id='content'>
         <div id='tone-animation'>
             <a href='{% url "tutor-url" %}'>
                 <img src='{% static "webui/images/tone_animation.gif" %}'>
             </a>
+            <p id='supported'>
+                <a href='{% url "tutor-url" %}'>Take me to the ToneTutor</a>.
+                Please note that you will be prompted to share your microphone.
+            </p>
         </div>
     
         <div id='unsupported'>
@@ -43,10 +50,6 @@
             </ul>
             
         </div>
-        <p id='supported'>
-            <a href='{% url "tutor-url" %}'>Take me to the ToneTutor</a>.
-            Please note that you will be prompted to share your microphone.
-        </p>
         <p>Learning to pronounce the tones in Mandarin is one of the most difficult parts
             of learning Mandarin, second only to learning to write the characters themselves.
             ToneTutor is a simple tool for the beginning learner to get fast feedback on their
