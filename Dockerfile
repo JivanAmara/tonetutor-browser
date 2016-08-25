@@ -50,7 +50,8 @@ WORKDIR /
 
 # --- Django setup
 RUN mkdir /tonetutor-static
-RUN python3 /tonetutor/manage.py collectstatic --noinput
+# Set expected environment variables.  They're needed to run, but won't be used for this command.
+RUN SECRET_KEY='tempsecretkey' EMAIL_USER='nouser' EMAIL_PASS='nopass' python3 /tonetutor/manage.py collectstatic --noinput
 
 # --- Scripts to run at container start
 # Unfortunately this is preventing startup.  Migrations will have to be done manually.
