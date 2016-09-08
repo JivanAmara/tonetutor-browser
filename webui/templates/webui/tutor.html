@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}'>
     <link rel="stylesheet" type="text/css" href='{% static "webui/css/tutor.css" %}'>
     <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+    <!-- MediaDevices xbrowser compatibility shim -->
+    <script src='{% static "webui/js/adapter-2.0.2.js" %}'></script>
 
     <!-- These are variables to share between inline script below and tutor.js  -->
     <script>
@@ -16,7 +18,7 @@
         // This is a MediaRecorder instance to record the user's pronunciation attempt.
         var recorder = null;
         // Indicates if the MediaRecorder instance is currently recording from the mic.
-        var recorder_state = {'recording': false};
+        var recorder_state = {'recording': false, 'audio_chunks': [], 'mimeType': null};
         // Current syllable to prompt the user with.
         var syllable = {'sound': null, 'tone': null, 'display': null, 'url': null};
         // This is a flag to indicate recorded data should be ignored if next is
@@ -33,9 +35,17 @@
             "Please make sure it's connected and refresh this page.\n" +
             "Choose to share it when prompted.";
         if(window.MediaRecorder !== undefined) {
-            navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
+            var getUserMedia = navigator.mediaDevices.getUserMedia;
+            if (getUserMedia === undefined) {
+                alert('No access to getUserMedia');
+                window.location = '{% url "homepage-url" %}';
+            }
+            getUserMedia({audio: true}).then(function (stream) {
                 // do something with the stream
-                recorder = new MediaRecorder(stream);
+                var preferredType = bestAudioMimeType();
+                var options = {mimeType: preferredType};
+                recorder_state.mimeType = preferredType;
+                recorder = new MediaRecorder(stream, options);
                 recorder.addEventListener('dataavailable', checkRecording);
             }).catch(function(error) {
                 alert(recorderInaccessibleMsg)

@@ -1,3 +1,16 @@
+function bestAudioMimeType() {
+    // Mime types in order of preference
+    var mime_types = ['audio/webm', 'audio/ogg'];
+    var preferred = null;
+    for (var i = 0; i < mime_types.length; i++) {
+        if ( MediaRecorder.isTypeSupported(mime_types[i]) ) {
+            preferred = mime_types[i];
+            break;
+        }
+    }
+    return preferred;
+}
+
 function startRecording(recorder, recorder_state) {
     /* Starts recording, updates the record button to indicate recording, and hides the
      * user's previous attempt audio controls.
@@ -48,6 +61,17 @@ function checkRecording(e) {
     /* Sends the user's attempt to the server for analysis & displays the appropriate image
      *  based on success/failure/indeterminable.
      */
+    /* If there's data, save it */
+    if (e.data.size > 0) {
+        recorder_state.audio_chunks.push(e.data);
+    }
+
+    /* If we're still recording, don't send the data to the server yet. */
+    if (recorder_state.recording == true) {
+        return;
+    }
+
+    /* Ignore sending the recording if it ended by the user clicking 'next'. */
     if (next_clicked) {
         next_clicked = false;
         return;
@@ -60,12 +84,21 @@ function checkRecording(e) {
     // e.data contains the audio data! let's associate it to an <audio> element
     var el = document.getElementById('attempt_audio');
     //document.querySelector('audio');
-    el.src = URL.createObjectURL(e.data);
+    var audio_data = new Blob(recorder_state.audio_chunks);
+    recorder_state.audio_chunks = [];
+    el.src = URL.createObjectURL(audio_data);
     var fd = new FormData();
-    // Get extension
-    typePieces = e.data.type.split('/');
-    ext = typePieces[typePieces.length - 1];
-    fd.append('attempt', e.data);
+    
+    // Make extension from mime type
+    var ext = null;
+    if (recorder_state.mimeType == 'audio/webm') {
+        ext = 'webm';
+    }
+    else if (recorder_state.mimeType == 'audio/ogg') {
+        ext = 'ogg';
+    }
+    
+    fd.append('attempt', audio_data);
     fd.append('csrfmiddlewaretoken', csrfToken);
     fd.append('extension', ext);
     fd.append('expected_sound', syllable.sound);
