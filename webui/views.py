@@ -28,7 +28,7 @@ from ttlib.normalization.interface import normalize_pipeline
 from ttlib.recognizer import ToneRecognizer
 
 from webui.forms import RecordingForm
-from webui.models import SubscriptionHistory
+from usermgmt.models import SubscriptionHistory
 
 
 logger = getLogger(__name__)

@@ -18,7 +18,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, PaymentSuccessView
-
+from tonetutor.views import EmailUsernameRegistrationView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^tutor/?$', TutorView.as_view(), name='tutor-url'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable$', GetSyllableView.as_view(), name='get-syllable'),
+    url(r'^accounts/register', EmailUsernameRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='subscription'),
     url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='payment-success'),
