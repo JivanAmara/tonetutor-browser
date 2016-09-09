@@ -1,4 +1,5 @@
 django
+stripe
 
 mutagen
 pytaglib    # Requires system-level taglib be installed
