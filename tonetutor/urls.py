@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^tutor/?$', TutorView.as_view(), name='tutor-url'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),
-    url(r'^accounts/register', EmailUsernameRegistrationView.as_view(), name='registration_register'),
+    url(r'^accounts/register/?$', EmailUsernameRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/profile/?$', UserProfileView.as_view(), name='user-profile'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='subscription'),

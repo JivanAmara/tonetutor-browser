@@ -24,6 +24,7 @@ RUN mkdir /tonetutor
 COPY docker /tonetutor/docker/
 COPY tonetutor /tonetutor/tonetutor/
 COPY webui /tonetutor/webui/
+COPY usermgmt /tonetutor/usermgmt/
 COPY manage.py /tonetutor/
 
 RUN rm /etc/nginx/sites-enabled/default
