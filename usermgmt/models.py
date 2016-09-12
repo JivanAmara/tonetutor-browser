@@ -3,12 +3,14 @@ Created on Sep 9, 2016
 
 @author: jivan
 '''
+from datetime import timedelta
 import datetime
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
-from django.conf import settings
+
 
 class RegistrationCode(models.Model):
     code = models.CharField(max_length=8)
@@ -70,11 +72,15 @@ class SubscriptionHistory(models.Model):
 
     @classmethod
     def is_active(cls, user):
+        # Returns true if the user has a subscription with an end date after today or
+        #    up to 1 day before today.
         user_history = SubscriptionHistory.objects.values('end_date')\
             .filter(user=user).exclude(stripe_confirm=None).order_by('-end_date')
+        dttoday = datetime.datetime.today()
+        today = datetime.date(year=dttoday.year, month=dttoday.month, day=dttoday.day)
         if len(user_history) == 0:
             active = False
-        elif datetime.datetime.now() <= user_history[0]['end_date']:
+        elif today <= user_history[0]['end_date'] + timedelta(days=1):
             active = True
         else:
             active = False
