@@ -15,6 +15,8 @@ from django.contrib.auth.models import User
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse
+from django.http.response import HttpResponseRedirect
+from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic.base import View
@@ -27,8 +29,8 @@ from ttlib.characteristics.interface import generate_all_characteristics
 from ttlib.normalization.interface import normalize_pipeline
 from ttlib.recognizer import ToneRecognizer
 
-from webui.forms import RecordingForm
 from usermgmt.models import SubscriptionHistory
+from webui.forms import RecordingForm
 
 
 logger = getLogger(__name__)
@@ -134,14 +136,28 @@ class TutorView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        print(user.username)
-        sound, tone, display, path = get_random_sample()
-        self.record_tone = tone
-        self.record_syllable = display
-        self.audio_sample = path
 
-        self.form = RecordingForm(initial={'expected_tone': tone})
-        return TemplateView.get(self, request, *args, **kwargs)
+        if self.subscription_expired(user):
+            ret = HttpResponseRedirect(reverse('subscription'))
+        else:
+            sound, tone, display, path = get_random_sample()
+            self.record_tone = tone
+            self.record_syllable = display
+            self.audio_sample = path
+
+            self.form = RecordingForm(initial={'expected_tone': tone})
+            ret = TemplateView.get(self, request, *args, **kwargs)
+
+        return ret
+
+    def subscription_expired(self, user):
+        if user.profile.registration_code.unlimited_use:
+            expired = False
+        elif SubscriptionHistory.is_active(user):
+            expired = False
+        else:
+            expired = True
+        return expired
 
 class SubscriptionView(TemplateView):
     template_name = 'webui/subscription.html'
@@ -154,10 +170,19 @@ class SubscriptionView(TemplateView):
     def get(self, request, *args, **kwargs):
         expires = SubscriptionHistory.expires(request.user)
         today = datetime.date.today()
+
+        # Generate a begin date for the user's next subscription period &
+        #    a message regarding when the user's subscription expired / will expire.
         if expires < today:
             begin_date = today
+            expiration_msg = 'Your subscription expired on {}'.format(
+                SubscriptionHistory.expires(request.user)
+            )
         else:
             begin_date = expires
+            expiration_msg = 'Your subscription will expire on {}'.format(
+                SubscriptionHistory.expires(request.user)
+            )
 
         # Make an end_date one month after begin_date
         try:
@@ -178,6 +203,7 @@ class SubscriptionView(TemplateView):
         sh.save()
 
         # Default to a single month for $5
+        self.expiration_msg = expiration_msg
         self.payment_amount = sh.payment_amount
         self.begin_date = sh.begin_date
         self.end_date = sh.end_date
@@ -187,6 +213,7 @@ class SubscriptionView(TemplateView):
     def get_context_data(self, **kwargs):
         c = TemplateView.get_context_data(self, **kwargs)
         c.update({
+            'expiration_msg': self.expiration_msg,
             'subscription_price': self.payment_amount,
             'begin_date': self.begin_date,
             'end_date': self.end_date,

@@ -10,6 +10,12 @@
     <link href='{% static "tonetutor/css/site.css" %}' rel='stylesheet' type='text/css' media='all' />
     <link href='{% static "webui/css/subscription.css" %}' rel='stylesheet' type='text/css' media='all' />
 
+    <style>
+        #expiration-msg {
+            color: red;
+        }
+    </style>
+
     <script type='text/javascript' src='https://js.stripe.com/v2/'></script>
     <script type='text/javascript'>
         Stripe.setPublishableKey('pk_test_AnHLc2bnR0joVD20uza73MI5');
@@ -64,9 +70,13 @@
         </div>
     </div>
 
+    <div id='expiration-msg'>
+        <p>{{expiration_msg}}</p>
+    </div>
+
     <div id='col-right'>
-        <p>You are paying ${{subscription_price | floatformat:2 }} to extend your subscription
-            from {{begin_date}} - {{end_date}}.</p>
+        <p>Fill in the form below to pay ${{subscription_price | floatformat:2 }}
+            for {{begin_date}} - {{end_date}}.</p>
 
         <form action='{% url "payment-success" %}' method='post' id='payment-form'>
             {% csrf_token %}

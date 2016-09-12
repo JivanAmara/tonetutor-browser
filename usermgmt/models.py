@@ -73,3 +73,9 @@ class SubscriptionHistory(models.Model):
             active = False
 
         return active
+
+    def __str__(self):
+        s = '{}: Active: {} Expires: {}'.format(
+                self.user.username, self.is_active(self.user), self.expires(self.user)
+        )
+        return s
