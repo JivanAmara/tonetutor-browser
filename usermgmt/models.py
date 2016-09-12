@@ -8,7 +8,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
-
+from django.conf import settings
 
 class RegistrationCode(models.Model):
     code = models.CharField(max_length=8)
@@ -31,6 +31,13 @@ class UserProfile(models.Model):
         if created:
             if hasattr(instance, 'registration_code'):
                 rc = instance.registration_code
+                if rc.code == settings.TRIAL_REGISTRATION_CODE \
+                    and SubscriptionHistory.objects.filter(user=instance).count() == 0:
+                    today = datetime.datetime.today()
+                    SubscriptionHistory.objects.create(
+                        user=instance, stripe_confirm='free', begin_date=today, end_date=today,
+                        payment_amount=0
+                    )
             else:
                 rc = None
             UserProfile.objects.create(user=instance, registration_code=rc)

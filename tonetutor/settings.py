@@ -14,6 +14,8 @@ import os
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ['SECRET_KEY']
 
+TRIAL_REGISTRATION_CODE = '4E3XB8UT'
+
 # --- Mail settings for sending registration emails.
 EMAIL_HOST = 'smtp.gmail.com'
 # Port 25 / Port 465 (SSL required) / Port 587 (TLS required)
