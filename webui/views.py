@@ -30,6 +30,7 @@ from ttlib.normalization.interface import normalize_pipeline
 from ttlib.recognizer import ToneRecognizer
 
 from usermgmt.models import SubscriptionHistory
+from usermgmt.functions import allowed_tutor
 from webui.forms import RecordingForm
 
 
@@ -137,9 +138,7 @@ class TutorView(TemplateView):
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        if self.subscription_expired(user):
-            ret = HttpResponseRedirect(reverse('tonetutor_subscription'))
-        else:
+        if allowed_tutor(user):
             sound, tone, display, path = get_random_sample()
             self.record_tone = tone
             self.record_syllable = display
@@ -147,17 +146,10 @@ class TutorView(TemplateView):
 
             self.form = RecordingForm(initial={'expected_tone': tone})
             ret = TemplateView.get(self, request, *args, **kwargs)
+        else:
+            ret = HttpResponseRedirect(reverse('tonetutor_subscription'))
 
         return ret
-
-    def subscription_expired(self, user):
-        if user.profile.registration_code.unlimited_use:
-            expired = False
-        elif SubscriptionHistory.is_active(user):
-            expired = False
-        else:
-            expired = True
-        return expired
 
 class SubscriptionView(TemplateView):
     template_name = 'webui/subscription.html'
@@ -175,9 +167,15 @@ class SubscriptionView(TemplateView):
         #    a message regarding when the user's subscription expired / will expire.
         if expires < today:
             begin_date = today
-            expiration_msg = 'Your subscription expired on {}'.format(
-                SubscriptionHistory.expires(request.user)
-            )
+            if request.user.profile.registration_code is None \
+                or request.user.profile.registration_code.unlimited_use:
+                expiration_msg = \
+                    "You have a special account and don't need to pay to use ToneTutor; "\
+                    "however, you're welcome to contribute if you'd like."
+            else:
+                expiration_msg = 'Your subscription expired on {}'.format(
+                    SubscriptionHistory.expires(request.user)
+                )
         else:
             begin_date = expires
             expiration_msg = 'Your subscription will expire on {}'.format(

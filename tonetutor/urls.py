@@ -17,9 +17,10 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-# from django.shortcuts import redirect
+from django.contrib.auth import views as auth_views
 
 from tonetutor.views import EmailUsernameRegistrationView
+from tonetutor.forms import EmailUsernameAuthenticationForm
 from usermgmt.views import UserProfileView
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, PaymentSuccessView
 
@@ -32,6 +33,7 @@ urlpatterns = [
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),
     url(r'^accounts/register/?$', EmailUsernameRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/profile/?$', UserProfileView.as_view(), name='tonetutor_user-profile'),
+    url(r'^accounts/login/?$', auth_views.login, {'authentication_form': EmailUsernameAuthenticationForm}),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='tonetutor_subscription'),
     url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='tonetutor_payment-success'),

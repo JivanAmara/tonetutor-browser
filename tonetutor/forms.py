@@ -4,10 +4,12 @@ Created on Sep 8, 2016
 @author: jivan
 '''
 from django import forms
-from django.contrib.auth import get_user_model
+from django.conf import settings
+from django.contrib.auth import get_user_model, forms as auth_forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from registration.forms import RegistrationFormUniqueEmail
-from django.conf import settings
+
 from usermgmt.models import RegistrationCode
 
 
@@ -41,5 +43,12 @@ class EmailUsernameForm(RegistrationFormUniqueEmail):
     def save(self, commit=True):
         user = super(EmailUsernameForm, self).save(commit)
         regcode = RegistrationCode.objects.get(code=self.cleaned_data['regcode'])
+        # This attribute is checked for in post-save code in usermgmt.models
         user.registration_code = regcode
         return user
+
+class EmailUsernameAuthenticationForm(AuthenticationForm):
+    # Override AuthenticationForm to label username as 'Email'
+    def __init__(self, request=None, *args, **kwargs):
+        super(EmailUsernameAuthenticationForm, self).__init__(request=request, *args, **kwargs)
+        self.fields['username'].label = 'Email'
