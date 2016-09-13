@@ -26,15 +26,15 @@ from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, Sub
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', HomePageView.as_view(), name='homepage-url'),
-    url(r'^tutor/?$', TutorView.as_view(), name='tutor-url'),
+    url(r'^$', HomePageView.as_view(), name='tonetutor_homepage'),
+    url(r'^tutor/?$', TutorView.as_view(), name='tonetutor_tutor'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),
     url(r'^accounts/register/?$', EmailUsernameRegistrationView.as_view(), name='registration_register'),
-    url(r'^accounts/profile/?$', UserProfileView.as_view(), name='user-profile'),
+    url(r'^accounts/profile/?$', UserProfileView.as_view(), name='tonetutor_user-profile'),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
-    url(r'^subscription/?$', SubscriptionView.as_view(), name='subscription'),
-    url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='payment-success'),
+    url(r'^subscription/?$', SubscriptionView.as_view(), name='tonetutor_subscription'),
+    url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='tonetutor_payment-success'),
 ]
 
 if settings.DEBUG:

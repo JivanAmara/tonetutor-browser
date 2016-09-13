@@ -1,14 +1,9 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
 
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
-</head>
-
-<body>
+{% block body %}
+    {{block.super}}
     <p>Congratulations, your account is now active.</p>
 
-    <p><a href='{% url "tutor-url" %}'>Click here to get started.</a></p>
-</body>
-
-</html>
+    <p><a href='{% url "tonetutor_tutor" %}'>Click here to get started.</a></p>
+{% endblock %}

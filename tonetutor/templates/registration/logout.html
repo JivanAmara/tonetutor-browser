@@ -1,19 +1,18 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
 
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
+{% block head %}
+    {{block.super}}
     <script type='text/javascript'>
-        window.setTimeout(function(){window.location='{% url "homepage-url" %}';}, 5000)
+        window.setTimeout(function(){window.location='{% url "tonetutor_homepage" %}';}, 5000)
     </script>
-</head>
+{% endblock %}
 
-<body>
+{% block body %}
+    {{block.super}}
     <title>Logged Out</title>
     <p>You have been logged out</p>
     <p>If you aren't redirected automatically in five seconds,
-        <a href='{% url "homepage-url" %}'>Click here to return to the ToneTutor homepage</a>.
+        <a href='{% url "tonetutor_homepage" %}'>Click here to return to the ToneTutor homepage</a>.
     </p>
-</body>
-
-</html>
+{% endblock %}

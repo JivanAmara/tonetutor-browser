@@ -1,10 +1,8 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
 
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}'>
+{% block head %}
+    {{block.super}}
     <link rel="stylesheet" type="text/css" href='{% static "webui/css/tutor.css" %}'>
     <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
     <!-- MediaDevices xbrowser compatibility shim -->
@@ -38,7 +36,7 @@
             var getUserMedia = navigator.mediaDevices.getUserMedia;
             if (getUserMedia === undefined) {
                 alert('No access to getUserMedia');
-                window.location = '{% url "homepage-url" %}';
+                window.location = '{% url "tonetutor_homepage" %}';
             }
             getUserMedia({audio: true}).then(function (stream) {
                 // do something with the stream
@@ -53,7 +51,7 @@
         }
         else {
             alert('No MediaRecorder support');
-            window.location = '{% url "homepage-url" %}';
+            window.location = '{% url "tonetutor_homepage" %}';
         }
 
         window.setTimeout(function(){
@@ -90,9 +88,10 @@
         });
     });
     </script>
-</head>
+{% endblock %}
 
-<body>
+{% block body %}
+    {{block.super}}
     <div id='help_container'>
         <a id='help_button'>help</a>
         <div id='help_text'>
@@ -109,7 +108,6 @@
             <p>When you're ready to move on, click 'Next'.</p>
             <hr>
         </div>
-        {% include "tonetutor/registration_menu.html" %}
     </div>
 
     <div id='content'>
@@ -132,6 +130,4 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>
+{% endblock %}

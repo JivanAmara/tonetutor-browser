@@ -1,17 +1,15 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+{% block head %}
+    {{block.super}}
     <title>{{ user.username }} Profile</title>
     <meta name='keywords' content='' />
     <meta name='description' content='' />
-    <link href='{% static "tonetutor/css/site.css" %}' rel='stylesheet' type='text/css' media='all' />
-</head>
+{% endblock %}
 
-<body>
-    {% include 'tonetutor/registration_menu.html' %}
+{% block body %}
+    {{block.super}}
     <table>
         <tr>
             <td>User: </td> <td>{{ user.username }}</td>
@@ -23,5 +21,4 @@
             <td>Registration Code: </td> <td>{{ user.profile.registration_code.code }}</td>
         </tr>
     </table>
-</body>
-</html>
+{% endblock %}

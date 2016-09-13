@@ -1,15 +1,11 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
-<!--
-Context includes: {{activation_key}} [1]
-[1] https://django-registration.readthedocs.io/en/2.1.2/quickstart.html
--->
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
+
+{% block head %}
+    {{block.super}}
 </head>
 
-<body>
+{% block body %}
+    {{block.super}}
     activate.html template
-</body>
-
-</html>
+{% endblock %}

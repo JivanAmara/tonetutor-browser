@@ -138,7 +138,7 @@ class TutorView(TemplateView):
         user = request.user
 
         if self.subscription_expired(user):
-            ret = HttpResponseRedirect(reverse('subscription'))
+            ret = HttpResponseRedirect(reverse('tonetutor_subscription'))
         else:
             sound, tone, display, path = get_random_sample()
             self.record_tone = tone

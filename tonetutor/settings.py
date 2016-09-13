@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'webui',
     'syllable_samples',
     'django_user_agents',
+
+    'sitetree',
 ]
 
 MIDDLEWARE_CLASSES = [

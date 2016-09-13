@@ -1,11 +1,8 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
 
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
-</head>
-
-<body>
+{% block body %}
+    {{block.super}}
     {% if form.errors %}
         {% for error in form.errors.all %}
             {{error}}
@@ -32,6 +29,4 @@
     
     <p>Don't have a username yet?  <a href='{% url "registration_register" %}'>Click here to register</a>.
     </p>
-</body>
-
-</html>
+{% endblock %}

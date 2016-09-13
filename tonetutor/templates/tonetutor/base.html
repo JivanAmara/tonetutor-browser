@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'>
+
+<head>
+    {% block head %}
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/menu.css" %}'>
+    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/js/menu.js" %}'>
+
+    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
+
+    <script type='text/javascript'>
+    $(document).ready(function() {
+        $('#auth-menu').mouseenter(function() {
+            $('#site-menu').show();; 
+        });
+        $('#auth-menu').mouseleave(function() {
+            $('#site-menu').hide();
+        });
+    });
+
+    </script>
+    {% endblock %}
+</head>
+
+<body>
+    {% block body %}
+    {% include "tonetutor/menu.html" %}
+    {% endblock %}
+</body>

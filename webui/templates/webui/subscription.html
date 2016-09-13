@@ -1,13 +1,11 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns='http://www.w3.org/1999/xhtml'>
-<head>
-    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+{% block head %}
+    {{block.super}}
     <title>Subscription</title>
     <meta name='keywords' content='' />
     <meta name='description' content='' />
-    <link href='{% static "tonetutor/css/site.css" %}' rel='stylesheet' type='text/css' media='all' />
     <link href='{% static "webui/css/subscription.css" %}' rel='stylesheet' type='text/css' media='all' />
 
     <style>
@@ -61,9 +59,10 @@
             });
         });
     </script>
-</head>
+{% endblock %}
 
-<body>
+{% block body %}
+    {{block.super}}
     <div id='col-left'>
         <div id='logo'>
             <h1>Your ToneTutor Subscription</h1>
@@ -78,7 +77,7 @@
         <p>Fill in the form below to pay ${{subscription_price | floatformat:2 }}
             for {{begin_date}} - {{end_date}}.</p>
 
-        <form action='{% url "payment-success" %}' method='post' id='payment-form'>
+        <form action='{% url "tonetutor_payment-success" %}' method='post' id='payment-form'>
             {% csrf_token %}
             <div class='form-row'>
                 <span class='payment-errors'></span>
@@ -90,7 +89,7 @@
                 <input type='text' size='20' data-stripe='number'>
               </label>
             </div>
-        
+
             <div class='form-row'>
               <label>
                 <span>Expiration (MM/YY)</span>
@@ -123,5 +122,4 @@
             <a id='submit-text'>Submit Payment</a>
         </p>
     </div>
-</body>
-</html>
+{% endblock %}

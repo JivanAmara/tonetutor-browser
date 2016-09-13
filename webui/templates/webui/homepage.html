@@ -1,11 +1,9 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
 
-<html>
-
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
+{% block head %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href='{% static "webui/css/homepage.css" %}' />
-    <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
 
     <script>
     $(document).ready(function(){
@@ -17,20 +15,19 @@
         }
     });
     </script>
-</head>
+{% endblock %}
 
-<body>
+{% block body %}
+    {{ block.super }}
     <div id='title'>Welcome to the ToneTutor!</div>
 
-    {% include "tonetutor/registration_menu.html" %}
-    
     <div id='content'>
         <div id='tone-animation'>
-            <a href='{% url "tutor-url" %}'>
+            <a href='{% url "tonetutor_tutor" %}'>
                 <img src='{% static "webui/images/tone_animation.gif" %}'>
             </a>
             <p id='supported'>
-                <a href='{% url "tutor-url" %}'>Take me to the Tone Tutor</a><br/>
+                <a href='{% url "tonetutor_tutor" %}'>Take me to the Tone Tutor</a><br/>
                 Please note that you will be prompted to share your microphone.
             </p>
         </div>
@@ -73,6 +70,4 @@
             results in a model which when given an audio file indicates which tone it is.
         </p>
     </div>
-</body>
-
-</html>
+{% endblock %}

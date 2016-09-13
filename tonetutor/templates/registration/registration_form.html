@@ -1,14 +1,8 @@
+{% extends "tonetutor/base.html" %}
 {% load static %}
-<html>
-<!--
-Context includes: {{form}} [1]
-[1] https://django-registration.readthedocs.io/en/2.1.2/quickstart.html
--->
-<head>
-    <link rel="stylesheet" type="text/css" href='{% static "tonetutor/css/site.css" %}' />
-</head>
 
-<body>
+{% block body %}
+    {{block.super}}
     <div id='title'>Register to use ToneTutor</div>
     
     <div id='registration-code'>
@@ -29,6 +23,4 @@ Context includes: {{form}} [1]
             <input type='submit' />
         </form>
     </div>
-</body>
-
-</html>
+{% endblock %}

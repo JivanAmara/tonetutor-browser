@@ -7,6 +7,9 @@
 #numpy       # Required by scipy
 #scipy
 
+# Package to cleanly arrange menu tree via admin
+sitetree
+
 docker/dependencies/snack_2.2.10/python/
 
 git+ssh://gitrepos/opt/gitrepos/tonerecorder.git@v1.1.0#egg=tonerecorder==1.1.0
