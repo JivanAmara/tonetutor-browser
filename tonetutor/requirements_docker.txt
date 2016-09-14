@@ -14,3 +14,7 @@ django-registration==2.1.2
 /tonetutor/docker/dependencies/syllable-samples-0.1.4.tar.gz
 
 /tonetutor/docker/pip_packages/snack_2.2.10/python # Requires system-level python3-tk (Tkinter) is installed
+
+# Automatic Testing
+pytest
+django-pytest

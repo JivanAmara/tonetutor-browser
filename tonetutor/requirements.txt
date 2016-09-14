@@ -27,5 +27,9 @@ django-registration==2.1.2
 
 stripe
 
+# Automatic Testing
+pytest
+django-pytest
+
 # For deployment only
 gunicorn

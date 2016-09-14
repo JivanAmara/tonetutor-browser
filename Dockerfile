@@ -46,6 +46,8 @@ RUN pip3 install gunicorn
 RUN pip3 install django-registration==2.1.2
 RUN pip3 install stripe
 RUN pip3 install sitetree
+RUN pip3 install pytest
+RUN pip3 install django-pytest
 
 WORKDIR /tonetutor/docker/dependencies/snack_2.2.10/python/
 RUN python3 setup.py install
