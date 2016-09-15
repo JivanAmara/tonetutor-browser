@@ -20,16 +20,9 @@ RUN apt-get install -y libav-tools
 RUN apt-get install -y normalize-audio
 RUN apt-get install -y libpq-dev
 
+# --- Copy pip package tarballs into image
 RUN mkdir /tonetutor
 COPY docker /tonetutor/docker/
-COPY tonetutor /tonetutor/tonetutor/
-COPY webui /tonetutor/webui/
-COPY usermgmt /tonetutor/usermgmt/
-COPY manage.py /tonetutor/
-
-RUN rm /etc/nginx/sites-enabled/default
-RUN cp /tonetutor/docker/nginx/tonetutor.nginx /etc/nginx/sites-available/
-RUN ln -s /etc/nginx/sites-available/tonetutor.nginx /etc/nginx/sites-enabled
 
 # --- Python app dependencies
 #RUN pip3 install -r /tonetutor/tonetutor/requirements_docker.txt
@@ -45,10 +38,22 @@ RUN pip3 install psycopg2
 RUN pip3 install gunicorn
 RUN pip3 install django-registration==2.1.2
 RUN pip3 install stripe
-RUN pip3 install sitetree
+RUN pip3 install django-sitetree
 RUN pip3 install pytest
 RUN pip3 install django-pytest
 
+# Copy code & configuration into image
+COPY tonetutor /tonetutor/tonetutor/
+COPY webui /tonetutor/webui/
+COPY usermgmt /tonetutor/usermgmt/
+COPY manage.py /tonetutor/
+
+# Set up nginx
+RUN rm /etc/nginx/sites-enabled/default
+RUN cp /tonetutor/docker/nginx/tonetutor.nginx /etc/nginx/sites-available/
+RUN ln -s /etc/nginx/sites-available/tonetutor.nginx /etc/nginx/sites-enabled
+
+# Set up tkSnack (python audio package)
 WORKDIR /tonetutor/docker/dependencies/snack_2.2.10/python/
 RUN python3 setup.py install
 WORKDIR /

@@ -1,6 +1,6 @@
 django
 stripe
-sitetree
+django-sitetree
 
 mutagen
 pytaglib    # Requires system-level taglib be installed

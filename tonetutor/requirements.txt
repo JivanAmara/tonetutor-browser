@@ -8,7 +8,7 @@
 #scipy
 
 # Package to cleanly arrange menu tree via admin
-sitetree
+django-sitetree
 
 docker/dependencies/snack_2.2.10/python/
 
