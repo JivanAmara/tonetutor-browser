@@ -201,6 +201,7 @@ class SubscriptionView(TemplateView):
         sh.save()
 
         # Default to a single month for $5
+        self.stripe_publishable_key = os.environ.get('STRIPE_PUBLISHABLE_KEY')
         self.expiration_msg = expiration_msg
         self.payment_amount = sh.payment_amount
         self.begin_date = sh.begin_date
@@ -211,6 +212,7 @@ class SubscriptionView(TemplateView):
     def get_context_data(self, **kwargs):
         c = TemplateView.get_context_data(self, **kwargs)
         c.update({
+            'stripe_publishable_key': self.stripe_publishable_key,
             'expiration_msg': self.expiration_msg,
             'subscription_price': self.payment_amount,
             'begin_date': self.begin_date,
@@ -231,7 +233,7 @@ class PaymentSuccessView(TemplateView):
         sh = SubscriptionHistory.objects.get(id=POST['subscription_id'])
         stipe_token = POST['stripeToken']
         # See your keys here: https://dashboard.stripe.com/account/apikeys
-        stripe.api_key = os.environ.get('STRIPE_API_KEY', None)
+        stripe.api_key = os.environ.get('STRIPE_SECRET_KEY')
 
         # --- Double-Check the total reported via the form in case of tampering.
         # Prices for all print types of this size

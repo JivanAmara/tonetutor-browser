@@ -71,5 +71,5 @@ RUN SECRET_KEY='tempsecretkey' EMAIL_USER='nouser' EMAIL_PASS='nopass' python3 /
 COPY docker/service /etc/service
 
 # Run With:
-# docker run --name <container-name> -e SECRET_KEY=<secret-key> -e EMAIL_USER=<email-user> -e EMAIL_PASS=<email-pass> -dit -p <host_port>:80 -v /mnt/data-volume/tonetutor-media/:/mnt/data-volume/tonetutor-media/ --add-host=database-host:<host-ip> <image>
+# docker run --name <container-name> -e SECRET_KEY=<site-secret-key> -e STRIPE_SECRET_KEY=<stripe-secret-key> -e STRIPE_PUBLISHABLE_KEY=<stripe-publishable-key> -e EMAIL_USER=<registration-sender> -e EMAIL_PASS=<email-pass> -dit -p <host_port>:80 -v /mnt/data-volume/tonetutor-media/:/mnt/data-volume/tonetutor-media/ --add-host=database-host:<host-ip> <image>
 # Enter the container and run migrations 'xvfb-run -a python3 /tonetutor/manage.py migrate --noinput'
