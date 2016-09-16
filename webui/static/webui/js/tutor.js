@@ -21,7 +21,7 @@ function startRecording(recorder, recorder_state) {
     recorder_state.recording = true;
     $('#attempt').hide(0);
     var rb = document.getElementById('record_button');
-    rb.style.backgroundColor = 'f77';
+    rb.style.backgroundColor = '#f77';
 }
 
 function stopRecording(recorder, recorder_state) {
