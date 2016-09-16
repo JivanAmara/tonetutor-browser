@@ -10,18 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 import os
+import random
+import string
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY', random.sample(string.printable, 80))
 
+# Registration code used by new users for a one-day free trial
 TRIAL_REGISTRATION_CODE = '4E3XB8UT'
 
 # --- Mail settings for sending registration emails.
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
 # Port 25 / Port 465 (SSL required) / Port 587 (TLS required)
 EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ['EMAIL_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASS']
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
@@ -101,12 +104,13 @@ WSGI_APPLICATION = 'tonetutor.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
+DBPASS = os.environ.get('DB_PASS')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'webvdc',  # Or path to database file if using sqlite3.
         'USER': 'webvdc',  # Not used with sqlite3.
-        'PASSWORD': 'webvdc',  # Not used with sqlite3.
+        'PASSWORD': DBPASS,  # Not used with sqlite3.
         'HOST': 'database-host',  # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     }

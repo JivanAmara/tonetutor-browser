@@ -3,9 +3,10 @@
 
 {% block head %}
     {{block.super}}
-</head>
+{% endblock %}
 
 {% block body %}
     {{block.super}}
-    activate.html template
+    Either you have already activated this account, or you need to double-check your activation link.
+    <p><a href='{% url "tonetutor_tutor" %}'>Click here to get started.</a></p>
 {% endblock %}
