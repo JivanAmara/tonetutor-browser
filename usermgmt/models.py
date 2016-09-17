@@ -11,6 +11,14 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 
+class AdCampaign(models.Model):
+    code = models.CharField(max_length=8)
+    description = models.CharField(max_length=300)
+    name = models.CharField(max_length=20)
+
+    def __str__(self):
+        s = '{}:{}'.format(self.name, self.code)
+        return s
 
 class RegistrationCode(models.Model):
     code = models.CharField(max_length=8)
@@ -27,6 +35,7 @@ class UserProfile(models.Model):
     registration_code = models.ForeignKey(
         RegistrationCode, related_name='user_profiles', null=True, blank=True
     )
+    ad_campaign = models.ForeignKey(AdCampaign, null=True, blank=True)
 
     @staticmethod
     def create_user_profile(sender, instance, created, **kwargs):
@@ -42,11 +51,14 @@ class UserProfile(models.Model):
                     )
             else:
                 rc = None
-            UserProfile.objects.create(user=instance, registration_code=rc)
+
+            ac = instance.ad_campaign if hasattr(instance, 'ad_campaign') else None
+
+            UserProfile.objects.create(user=instance, registration_code=rc, ad_campaign=ac)
 
     def __str__(self):
         rc = 'None' if self.registration_code is None else self.registration_code.code
-        s = '{} - RegCode: {}'.format(self.user.username, rc)
+        s = '{} - RegCode: {} AdCampaign: {}'.format(self.user.username, rc, self.ad_campaign)
         return s
 
 post_save.connect(UserProfile.create_user_profile, sender=User)

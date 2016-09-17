@@ -16,4 +16,8 @@ class EmailUsernameRegistrationView(RegistrationView):
         c.update({
             'free_trial_code': settings.TRIAL_REGISTRATION_CODE
         })
+        form = c['form']
+        acc = form.fields['ad_campaign_code']
+        acc.initial = self.request.session.get('ad_campaign_code')
+
         return c

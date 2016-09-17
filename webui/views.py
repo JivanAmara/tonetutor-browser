@@ -45,6 +45,7 @@ class HomePageView(TemplateView):
         browser_family = request.user_agent.browser.family
         browser_version = request.user_agent.browser.version
         browser_version_string = request.user_agent.browser.version_string
+        request.session['ad_campaign_code'] = request.GET.get('c')
 
         self.context_updates = {
             'browser_family': browser_family,

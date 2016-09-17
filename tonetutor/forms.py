@@ -10,13 +10,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ValidationError
 from registration.forms import RegistrationFormUniqueEmail
 
-from usermgmt.models import RegistrationCode
+from usermgmt.models import RegistrationCode, AdCampaign
 
 
 User = get_user_model()
 
 class EmailUsernameForm(RegistrationFormUniqueEmail):
     regcode = forms.CharField(max_length=8, required=True, label='Registration Code')
+    ad_campaign_code = forms.CharField(max_length=8, required=False, widget=forms.HiddenInput, label='')
 
     def __init__(self, *args, **kwargs):
         super(EmailUsernameForm, self).__init__(*args, **kwargs)
@@ -43,8 +44,13 @@ class EmailUsernameForm(RegistrationFormUniqueEmail):
     def save(self, commit=True):
         user = super(EmailUsernameForm, self).save(commit)
         regcode = RegistrationCode.objects.get(code=self.cleaned_data['regcode'])
+        try:
+            ad_campaign = AdCampaign.objects.get(code=self.cleaned_data['ad_campaign_code'])
+        except:
+            ad_campaign = None
         # This attribute is checked for in post-save code in usermgmt.models
         user.registration_code = regcode
+        user.ad_campaign = ad_campaign
         return user
 
 class EmailUsernameAuthenticationForm(AuthenticationForm):
