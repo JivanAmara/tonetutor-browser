@@ -31,7 +31,7 @@ RUN pip3 install mutagen
 RUN pip3 install pytaglib
 RUN pip3 install django-user_agents==0.3.0
 RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.2.tar.gz
-RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.1.4.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.1.tar.gz
 RUN pip3 install psycopg2

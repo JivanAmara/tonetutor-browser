@@ -17,7 +17,7 @@ git+ssh://gitrepos/opt/gitrepos/hanzi_basics.git@v1.1.2#egg=hanzi-basics==1.1.2
 
 Django >= 1.9.7
 git+ssh://gitrepos/opt/gitrepos/ttlib.git@v0.2.2#egg=ttlib==0.2.2
-git+ssh://gitrepos/opt/gitrepos/syllable_samples@v0.1.4#egg=syllable-samples==0.1.4
+git+ssh://gitrepos/opt/gitrepos/syllable_samples@v0.2.1#egg=syllable-samples==0.2.1
 mutagen
 pytaglib    # Requires system-level taglib be installed
 

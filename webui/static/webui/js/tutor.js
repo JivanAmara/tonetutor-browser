@@ -48,12 +48,22 @@ function getSyllable(example_audio_id, prompt_id, syllable) {
         syllable.sound = data.sound;
         syllable.display = data.display;
         syllable.url = data.url;
-        
+        syllable.hanzi = data.hanzi;
+
         example_audio = document.getElementById(example_audio_id);
         example_audio.src = data.url;
         example_audio.load();
         prompt = document.getElementById(prompt_id);
-        prompt.innerHTML = data.display;
+        var display_text = data.display;
+        var hanzi_list = '';
+        for (var i = 0; i < syllable.hanzi.length; i++) {
+            hanzi_list = hanzi_list + syllable.hanzi[i][0];
+            if (i < syllable.hanzi.length - 1) {
+                hanzi_list = hanzi_list + ', '
+            }
+        }
+        display_text = display_text + ' (' + hanzi_list + ')';
+        prompt.innerHTML = display_text;
     });
 }
 

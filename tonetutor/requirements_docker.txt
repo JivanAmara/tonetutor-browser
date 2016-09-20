@@ -11,7 +11,7 @@ django-registration==2.1.2
 /tonetutor/docker/tonerecorder-1.1.1.tar.gz # For RecordedSyllable model.
 
 /tonetutor/docker/dependencies/ttlib-0.2.2.tar.gz
-/tonetutor/docker/dependencies/syllable-samples-0.1.4.tar.gz
+/tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
 
 /tonetutor/docker/pip_packages/snack_2.2.10/python # Requires system-level python3-tk (Tkinter) is installed
 

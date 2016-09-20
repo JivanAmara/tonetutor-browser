@@ -114,7 +114,7 @@ class GetSyllableView(View):
         return View.dispatch(self, request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        sound, tone, display, path = get_random_sample()
+        sound, tone, display, path, hanzi = get_random_sample()
 
         # 'css/style.css' file should exist in static path. otherwise, error will occur
         url = static(path)
@@ -122,6 +122,7 @@ class GetSyllableView(View):
             'sound': sound,
             'tone': tone,
             'display': display,
+            'hanzi': hanzi,
             'url': url
         }
 
@@ -140,10 +141,10 @@ class TutorView(TemplateView):
         user = request.user
 
         if allowed_tutor(user):
-            sound, tone, display, path = get_random_sample()
-            self.record_tone = tone
-            self.record_syllable = display
-            self.audio_sample = path
+            sound, tone, display, path, hanzis = get_random_sample()
+#             self.record_tone = tone
+#             self.record_syllable = display
+#             self.audio_sample = path
 
             self.form = RecordingForm(initial={'expected_tone': tone})
             ret = TemplateView.get(self, request, *args, **kwargs)
