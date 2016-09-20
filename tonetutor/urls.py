@@ -22,12 +22,14 @@ from django.contrib.auth import views as auth_views
 from tonetutor.views import EmailUsernameRegistrationView
 from tonetutor.forms import EmailUsernameAuthenticationForm
 from usermgmt.views import UserProfileView
-from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, PaymentSuccessView
+from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, \
+    PaymentSuccessView, VersionView
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomePageView.as_view(), name='tonetutor_homepage'),
+    url(r'^version/?$', VersionView.as_view(), name='tonetutor_version'),
     url(r'^tutor/?$', TutorView.as_view(), name='tonetutor_tutor'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),

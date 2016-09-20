@@ -32,6 +32,7 @@ from ttlib.recognizer import ToneRecognizer
 from usermgmt.models import SubscriptionHistory
 from usermgmt.functions import allowed_tutor
 from webui.forms import RecordingForm
+from gunicorn.http.wsgi import Response
 
 
 logger = getLogger(__name__)
@@ -288,3 +289,8 @@ class PaymentSuccessView(TemplateView):
             'error_msg': self.error_msg,
         })
         return c
+
+class VersionView(View):
+    def get(self, request):
+        resp = HttpResponse('Version: 1.4.0')
+        return resp
