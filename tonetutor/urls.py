@@ -23,7 +23,7 @@ from tonetutor.views import EmailUsernameRegistrationView
 from tonetutor.forms import EmailUsernameAuthenticationForm
 from usermgmt.views import UserProfileView
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, \
-    PaymentSuccessView, VersionView
+    PaymentSuccessView, VersionView, CampaignBrowserDetails
 
 
 urlpatterns = [
@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^$', HomePageView.as_view(), name='tonetutor_homepage'),
     url(r'^version/?$', VersionView.as_view(), name='tonetutor_version'),
     url(r'^tutor/?$', TutorView.as_view(), name='tonetutor_tutor'),
+    url(r'report_campaign_browser/?$', CampaignBrowserDetails.as_view(), name='tonetutor_api-report-homepage-browser'),
     url(r'^api/tonecheck$', ToneCheck.as_view(), name='tone-check'),
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),
     url(r'^accounts/register/?$', EmailUsernameRegistrationView.as_view(), name='registration_register'),

@@ -15,7 +15,7 @@ from usermgmt.models import RegistrationCode
 
 def test_expected_registration_form_fields(client):
     # While username isn't used, it's present due to subclassing of registration form.
-    expected_field_names = ['username', 'email', 'password1', 'password2', 'regcode']
+    expected_field_names = ['username', 'email', 'password1', 'password2', 'regcode', 'ad_campaign_code']
     resp = client.get(reverse('registration_register'))
     assert resp.status_code == 200
 

@@ -9,9 +9,23 @@
     $(document).ready(function(){
         if(window.MediaRecorder == undefined) {
             $('#unsupported').show(0);
+            $.post({
+                'url': '{% url "tonetutor_api-report-homepage-browser" %}',
+                'data': {
+                    'media_recorder_supported': false,
+                    'csrfmiddlewaretoken': '{{csrf_token}}'
+                }
+            });
         }
         else {
             $('#supported').show(0);
+            $.post({
+                'url': '{% url "tonetutor_api-report-homepage-browser" %}',
+                'data': {
+                    'media_recorder_supported': true,
+                    'csrfmiddlewaretoken': '{{csrf_token}}',
+                }
+            });
         }
     });
     </script>

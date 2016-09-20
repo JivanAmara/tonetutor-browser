@@ -20,6 +20,7 @@ from django.urls.base import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from django.views.generic.base import View
+from gunicorn.http.wsgi import Response
 from hanzi_basics.models import PinyinSyllable
 import scipy.io.wavfile
 import stripe
@@ -29,10 +30,10 @@ from ttlib.characteristics.interface import generate_all_characteristics
 from ttlib.normalization.interface import normalize_pipeline
 from ttlib.recognizer import ToneRecognizer
 
-from usermgmt.models import SubscriptionHistory
 from usermgmt.functions import allowed_tutor
+from usermgmt.models import SubscriptionHistory, AdCampaign
 from webui.forms import RecordingForm
-from gunicorn.http.wsgi import Response
+from webui.models import HomePageCampaignDetails
 
 
 logger = getLogger(__name__)
@@ -61,6 +62,24 @@ class HomePageView(TemplateView):
         context.update(self.context_updates)
         return context
 
+class CampaignBrowserDetails(View):
+    def post(self, request, *args, **kwargs):
+        campaign_code = request.session.get('ad_campaign_code')
+        if campaign_code is not None:
+            campaign = AdCampaign.objects.get(code=campaign_code)
+        else:
+            campaign = None
+
+        browser_family = request.user_agent.browser.family
+        browser_version_string = request.user_agent.browser.version_string
+        media_recorder_supported = request.POST['media_recorder_supported'].lower() == 'true'
+
+        HomePageCampaignDetails.objects.create(
+            campaign=campaign, browser_family=browser_family,
+            browser_version_string=browser_version_string,
+            media_recorder_supported=media_recorder_supported
+        )
+        return HttpResponse('{"status": "ok"}')
 
 class ToneCheck(View):
     ''' *brief*: provides a web-api to check the predicted tone of an audio sample.
