@@ -89,7 +89,7 @@ class SubscriptionHistory(models.Model):
         user_subscriptions = SubscriptionHistory.objects.values('end_date').filter(user=user)\
             .exclude(stripe_confirm=None).order_by('-end_date')
         if len(user_subscriptions) == 0:
-            expires = datetime.date(datetime.MINYEAR, 1, 1)
+            expires = datetime.date(datetime.MAXYEAR, 1, 1)
         else:
             expires = user_subscriptions[0]['end_date']
 

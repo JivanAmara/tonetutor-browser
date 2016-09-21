@@ -20,6 +20,9 @@
         <tr>
             <td>Registration Code: </td> <td>{{ user.profile.registration_code.code }}</td>
         </tr>
+        <tr>
+            <td>{{ subscription_expiry_message }}</td>
+        </tr>
     </table>
 
     <p>Current color theme: {{color_theme_display_name}}</p>
