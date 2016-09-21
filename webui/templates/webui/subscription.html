@@ -8,12 +8,6 @@
     <meta name='description' content='' />
     <link href='{% static "webui/css/subscription.css" %}' rel='stylesheet' type='text/css' media='all' />
 
-    <style>
-        #expiration-msg {
-            color: red;
-        }
-    </style>
-
     <script type='text/javascript' src='https://js.stripe.com/v2/'></script>
     <script type='text/javascript'>
         Stripe.setPublishableKey('{{stripe_publishable_key}}');
@@ -69,7 +63,7 @@
         </div>
     </div>
 
-    <div id='expiration-msg'>
+    <div id='expiration-msg' class='alert'>
         <p>{{expiration_msg}}</p>
     </div>
 

@@ -8,10 +8,22 @@ body {
     background-color: #bbf;
     padding: 2%;
 }
+body a:link {
+    color: #808;
+}
+body a:hover {
+    color: #f0f;
+}
+body a:visited {
+    color: #505;
+}
 .fieldWrapper {
     width: 30em;
     text-align: right;
 }
 .fieldWrapper label {
     width: 50%;
+}
+.alert {
+    color: purple;
 }

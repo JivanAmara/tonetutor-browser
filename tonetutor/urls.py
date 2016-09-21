@@ -21,7 +21,7 @@ from django.contrib.auth import views as auth_views
 
 from tonetutor.views import EmailUsernameRegistrationView
 from tonetutor.forms import EmailUsernameAuthenticationForm
-from usermgmt.views import UserProfileView
+from usermgmt.views import UserProfileView, SetColorThemeView
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, \
     PaymentSuccessView, VersionView, CampaignBrowserDetails
 
@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^api/getsyllable/?$', GetSyllableView.as_view(), name='get-syllable'),
     url(r'^accounts/register/?$', EmailUsernameRegistrationView.as_view(), name='registration_register'),
     url(r'^accounts/profile/?$', UserProfileView.as_view(), name='tonetutor_user-profile'),
+    url(r'^api/set-color-theme', SetColorThemeView.as_view(), name='tonetutor_set-color-theme'),
     url(r'^accounts/login/?$', auth_views.login, {'authentication_form': EmailUsernameAuthenticationForm}),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='tonetutor_subscription'),

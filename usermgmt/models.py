@@ -31,11 +31,24 @@ class RegistrationCode(models.Model):
                    .format(self.code, self.max_users, self.unlimited_use)
 
 class UserProfile(models.Model):
+    default_color_theme = 'greys'
     user = models.OneToOneField(User, related_name='profile')
     registration_code = models.ForeignKey(
         RegistrationCode, related_name='user_profiles', null=True, blank=True
     )
     ad_campaign = models.ForeignKey(AdCampaign, null=True, blank=True)
+    color_theme = models.CharField(max_length=15, default=default_color_theme)
+
+    def color_theme_display_text(self):
+        d = {
+            'greys': 'Greys',
+            'inverted': 'Inverted',
+            'purple': 'Purple',
+        }
+        if self.color_theme not in d:
+            self.color_theme = UserProfile.default_color_theme
+        dt = d[self.color_theme]
+        return dt
 
     @staticmethod
     def create_user_profile(sender, instance, created, **kwargs):

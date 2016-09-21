@@ -1,0 +1,38 @@
+html {
+    background-color: #555;    
+}
+body {
+    border: 1px solid #000;
+    box-shadow: 10px 10px #222;
+    margin: 5%;
+    background-color: #888;
+    padding: 2%;
+}
+body a:link {
+    color: #222;
+}
+body a:hover {
+    color: #fff;
+}
+body a:visited {
+    color: #ccc;
+}
+.fieldWrapper {
+    width: 30em;
+    text-align: right;
+}
+.fieldWrapper label {
+    width: 50%;
+}
+.borderedElement {
+    background-color: #aaa;
+    border: 2px solid #fff;
+}
+.customButton {
+    background-color: #aaa;
+    border: 1px solid #555;
+    box-shadow: 2px 5px #444;
+}
+.alert {
+    color: #ddd;
+}

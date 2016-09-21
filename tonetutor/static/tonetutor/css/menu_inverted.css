@@ -1,0 +1,15 @@
+#auth-menu {
+    text-align: right;
+}
+
+#site-menu {
+    background-color: #000;
+    border: 1px solid white;
+    text-align: left;
+    display: none;   
+    padding-right: 20%; 
+}
+
+.current_branch {
+    font-weight: bold;
+}

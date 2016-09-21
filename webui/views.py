@@ -65,8 +65,11 @@ class HomePageView(TemplateView):
 class CampaignBrowserDetails(View):
     def post(self, request, *args, **kwargs):
         campaign_code = request.session.get('ad_campaign_code')
-        if campaign_code is not None:
-            campaign = AdCampaign.objects.get(code=campaign_code)
+        if campaign_code:
+            try:
+                campaign = AdCampaign.objects.get(code=campaign_code)
+            except AdCampaign.DoesNotExist:
+                campaign = None
         else:
             campaign = None
 

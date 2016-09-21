@@ -22,5 +22,13 @@
         </tr>
     </table>
 
+    <p>Current color theme: {{color_theme_display_name}}</p>
+    <ul>
+        <li><a href="{% url 'tonetutor_set-color-theme' %}?theme_name=greys">Set color theme 'Greys'</a></li>
+        <li><a href="{% url 'tonetutor_set-color-theme' %}?theme_name=inverted">Set color theme 'Inverted'</a></li>
+        <li><a href="{% url 'tonetutor_set-color-theme' %}?theme_name=purple">Set color theme 'Purple'</a></li>
+    </ul>
+    
+
     <p><a href="{% url 'tonetutor_tutor' %}">Take me to the Tone Tutor</a></p>
 {% endblock %}

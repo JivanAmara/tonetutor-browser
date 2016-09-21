@@ -41,11 +41,13 @@ hr {
 
 #record_button {
     display: block;
+/*  
     border: 1px solid black;
+    box-shadow: 2px 5px black;
+*/
     margin: 2%;
     padding: 5px;
     text-align: center;
-    box-shadow: 2px 5px black;
 }
 
 #record_button:active {
@@ -57,11 +59,9 @@ hr {
 
 #next_button {
     display: block;
-    border: 1px solid black;
     margin: 2%;
     padding: 5px;
     text-align: center;
-    box-shadow: 2px 5px black;
 }
 
 #next_button:active {
