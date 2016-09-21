@@ -50,7 +50,7 @@
             <p>The browser you're using is '{{browser_family}}' version '{{browser_version_string}}'</p>
             <p>This browser does not have the features necessary to record your pronunciation attempts
                 for Tone Tutor to give you feedback.
-                In order to use ToneTutor please install one of the browsers listed below:
+                In order to use Tone Tutor please install one of the browsers listed below:
             </p>
             
             <ul>
@@ -63,26 +63,28 @@
             
         </div>
         <p>Learning to pronounce the tones in Mandarin is one of the most difficult parts
-            of learning Mandarin, second only to learning to write the characters themselves.
-            ToneTutor is a simple tool for the beginning learner to get fast feedback on their
+            of learning Mandarin, probably second only to learning to write the characters.
+            Tone Tutor is a simple tool for the beginning learner to get fast feedback on their
             pronunciation of tones for single pinyin syllables.  This will give your learning
             a speed-boost through the initial challenges.
         </p>
-        <p> Don't spend too much time on one syllable.  If you can't get the pronunciation right
-            after 6-8 tries, move on.  It will come up again after you've strengthened your skills.
+        <p> Don't spend too much time on one syllable.  With our first model, the grader can be
+            a bit strict. Don't get discouraged and if you can't get the pronunciation right
+            after 6-8 tries, move on.  The syllable will come up again after you've strengthened
+            your skills.
         </p> 
         <p>
-            In ToneTutor, since they don't provide the same challenge as pronouncing tones,
-            the sounds themselves aren't graded, only your pronunciation of the
-            tones.  For example, if prompted with "jì" and you say "yòu" correctly you'll
-            get a green light to move to the next.  Stay tuned for a similar tool providing
-            feedback on tone-pair pronunciation.
+            Currently in Tone Tutor the sounds themselves aren't graded only your pronunciation of
+            the tones.  Example sounds are by native Mandarin speakers from different regions
+            of China.
         </p>
-                
+
         <p><span style='font-size: 120%'>How does it work?</span> Many recordings of native
             speakers pronouncing these syllables have been analyzed using a custom
-            machine-learning algorithm to identify tones from audio files.  This analysis
-            results in a model which when given an audio file indicates which tone it is.
+            machine-learning algorithm to identify tones from audio samples.  This analysis
+            results in the model I use to grade your pronunciation.  The more data I
+            have, including your attempts, the more accurate and forgiving I can make the next
+            version of the Mandarin Tone Tutor.
         </p>
     </div>
 {% endblock %}
