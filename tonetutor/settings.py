@@ -13,11 +13,21 @@ import os
 import random
 import string
 
+# 0 is www.mandarintt.com, 1 is test-01.mandarintt.com.
+#    These are set in tonetutor fixture 'sites_data.json'
+SITE_ID = 0
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', random.sample(string.printable, 80))
 
 # Registration code used by new users for a one-day free trial
 TRIAL_REGISTRATION_CODE = '4E3XB8UT'
+
+# Facebook Application ID
+FB_APP_ID = '1164657436935071'
+
+# Log file path
+LOG_FILEPATH = '/var/log/tonetutor.log'
 
 # --- Mail settings for sending registration emails.
 EMAIL_HOST = os.environ.get('EMAIL_HOST')
@@ -38,9 +48,6 @@ SYLLABLE_AUDIO_DIR = 'audio-files'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -55,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'tonetutor',
     'usermgmt',
@@ -94,6 +102,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'tonetutor.views.current_site_context_processor',
+                'tonetutor.views.fb_app_id_context_processor',
                 'usermgmt.views.color_theme_context_processor',
             ],
         },
@@ -156,3 +166,22 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tonetutor-static/'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': LOG_FILEPATH,
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
