@@ -48,7 +48,7 @@ SYLLABLE_AUDIO_DIR = 'audio-files'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.mandarintt.com', 'localhost']
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
