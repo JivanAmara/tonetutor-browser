@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href='{% static "webui/css/tutor.css" %}'>
     <script src='{% static "webui/js/jquery-3.1.0.min.js" %}'></script>
     <!-- MediaDevices xbrowser compatibility shim -->
-    <script src='{% static "webui/js/adapter-2.0.2.js" %}'></script>
+    <script src='{% static "webui/js/adapter-2.0.3.js" %}'></script>
 
     <!-- These are variables to share between inline script below and tutor.js  -->
     <script>
@@ -33,12 +33,11 @@
             "Please make sure it's connected and refresh this page.\n" +
             "Choose to share it when prompted.";
         if(window.MediaRecorder !== undefined) {
-            var getUserMedia = navigator.mediaDevices.getUserMedia;
-            if (getUserMedia === undefined) {
+            if (navigator.mediaDevices.getUserMedia === undefined) {
                 alert('No access to getUserMedia');
                 window.location = '{% url "tonetutor_homepage" %}';
             }
-            getUserMedia({audio: true}).then(function (stream) {
+            navigator.mediaDevices.getUserMedia({'audio': true}).then(function (stream) {
                 // do something with the stream
                 var preferredType = bestAudioMimeType();
                 var options = {mimeType: preferredType};
