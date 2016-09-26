@@ -314,5 +314,6 @@ class PaymentSuccessView(TemplateView):
 
 class VersionView(View):
     def get(self, request):
-        resp = HttpResponse('Version: 1.4.0')
+        v = settings.TONETUTOR_VERSION
+        resp = HttpResponse('Version: {}'.format(v))
         return resp

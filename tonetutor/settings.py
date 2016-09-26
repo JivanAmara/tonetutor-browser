@@ -13,6 +13,8 @@ import os
 import random
 import string
 
+TONETUTOR_VERSION = '1.4.4'
+
 # 0 is www.mandarintt.com, 1 is test-01.mandarintt.com.
 #    These are set in tonetutor fixture 'sites_data.json'
 SITE_ID = 0
@@ -48,7 +50,7 @@ SYLLABLE_AUDIO_DIR = 'audio-files'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ['www.mandarintt.com', 'localhost']
+ALLOWED_HOSTS = ['www.mandarintt.com', 'test.mandarintt.com', 'localhost']
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
