@@ -23,12 +23,13 @@ from tonetutor.views import EmailUsernameRegistrationView
 from tonetutor.forms import EmailUsernameAuthenticationForm
 from usermgmt.views import UserProfileView, SetColorThemeView
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, \
-    PaymentSuccessView, VersionView, CampaignBrowserDetails
+    PaymentSuccessView, VersionView, CampaignBrowserDetails, HelpView
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomePageView.as_view(), name='tonetutor_homepage'),
+    url(r'^help/?$', HelpView.as_view(), name='tonetutor_help'),
     url(r'^version/?$', VersionView.as_view(), name='tonetutor_version'),
     url(r'^tutor/?$', TutorView.as_view(), name='tonetutor_tutor'),
     url(r'report_campaign_browser/?$', CampaignBrowserDetails.as_view(), name='tonetutor_api-report-homepage-browser'),

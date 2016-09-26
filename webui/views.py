@@ -317,3 +317,6 @@ class VersionView(View):
         v = settings.TONETUTOR_VERSION
         resp = HttpResponse('Version: {}'.format(v))
         return resp
+
+class HelpView(TemplateView):
+    template_name = 'webui/help.html'
