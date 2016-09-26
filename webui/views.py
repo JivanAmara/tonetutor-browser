@@ -11,7 +11,7 @@ import uuid
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse
@@ -105,7 +105,7 @@ class ToneCheck(View):
         expected_tone = request.POST['expected_tone']
         is_native = request.POST.get('is_native', False)
 
-        user = request.user if type(request.user) == User else None
+        user = request.user if request.user != AnonymousUser else None
 
         s = PinyinSyllable.objects.get(sound=expected_sound, tone=expected_tone)
         rs = RecordedSyllable(native=is_native, user=user, syllable=s, file_extension=extension)
