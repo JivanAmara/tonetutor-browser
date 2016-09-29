@@ -11,6 +11,7 @@
     <!-- These are variables to share between inline script below and tutor.js  -->
     <script>
         var csrfToken = '{{csrf_token}}';
+        var authToken = '{{auth_token}}';
         var getSyllableUrl = '{% url "get-syllable" %}';
         var checkSyllableUrl = '{% url "tone-check" %}';
         // This is a MediaRecorder instance to record the user's pronunciation attempt.

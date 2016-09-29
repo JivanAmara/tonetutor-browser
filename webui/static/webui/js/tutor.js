@@ -117,6 +117,7 @@ function checkRecording(e) {
     $.ajax({
         type: 'POST',
         url: checkSyllableUrl,
+        headers: {'Authorization': 'Token ' + authToken},
         data: fd,
         processData: false,
         contentType: false,

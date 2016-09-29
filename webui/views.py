@@ -6,6 +6,7 @@ from logging import getLogger
 import os
 from pprint import pprint
 import random
+import re
 import time
 import uuid
 
@@ -18,10 +19,12 @@ from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 from gunicorn.http.wsgi import Response
 from hanzi_basics.models import PinyinSyllable
+from rest_framework.authtoken.models import Token
 import scipy.io.wavfile
 import stripe
 from syllable_samples.interface import get_random_sample
@@ -94,18 +97,21 @@ class ToneCheck(View):
             'tone' is an integer 1-5 indicating the tone or null indicating that the predictor
                 can't tell which tone it is.
     '''
-    @method_decorator(login_required)
+    @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return View.dispatch(self, request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        token_header = request.META.get('HTTP_AUTHORIZATION')
+        auth_token = re.sub(r'Token', '', token_header)
+        auth_token = auth_token.strip()
         attempt = request.FILES['attempt']
         extension = request.POST['extension']
         expected_sound = request.POST['expected_sound']
         expected_tone = request.POST['expected_tone']
         is_native = request.POST.get('is_native', False)
 
-        user = request.user if request.user != AnonymousUser else None
+        user = Token.objects.get(key=auth_token).user
 
         s = PinyinSyllable.objects.get(sound=expected_sound, tone=expected_tone)
         rs = RecordedSyllable(native=is_native, user=user, syllable=s, file_extension=extension)
@@ -119,10 +125,20 @@ class ToneCheck(View):
             with NamedTemporaryFile(suffix='.wav') as normalized:
                 normalize_pipeline(original_path, normalized.name)
                 sample_rate, wave_data = scipy.io.wavfile.read(normalized.name)
-                sample_characteristics = generate_all_characteristics(wave_data, sample_rate)
+                # --- Deal with sample that's too short to accurately analyze
+                # minimum length (seconds)
+                min_length = 0.15
+                attempt_length = len(wave_data) / sample_rate
+                print('Attempt length {}{}: {}'.format(
+                    expected_sound, expected_tone, attempt_length)
+                )
+                if attempt_length < min_length:
+                    tone = None
+                else:
+                    sample_characteristics = generate_all_characteristics(wave_data, sample_rate)
 
-                tr = ToneRecognizer()
-                tone = tr.get_tone(sample_characteristics)
+                    tr = ToneRecognizer()
+                    tone = tr.get_tone(sample_characteristics)
 
         result = {
             'status': True,
@@ -162,6 +178,11 @@ class TutorView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
+        try:
+            token, created_ignored = Token.objects.get_or_create(user=user)
+            self.auth_token = token.key
+        except Exception as ex:
+            self.auth_token = ''
 
         if allowed_tutor(user):
             sound, tone, display, path, hanzis = get_random_sample()
@@ -175,6 +196,13 @@ class TutorView(TemplateView):
             ret = HttpResponseRedirect(reverse('tonetutor_subscription'))
 
         return ret
+
+    def get_context_data(self, **kwargs):
+        c = TemplateView.get_context_data(self, **kwargs)
+        c.update({
+            'auth_token': self.auth_token,
+        })
+        return c
 
 class SubscriptionView(TemplateView):
     template_name = 'webui/subscription.html'

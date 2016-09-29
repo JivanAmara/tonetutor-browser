@@ -41,6 +41,7 @@ RUN pip3 install stripe
 RUN pip3 install django-sitetree
 RUN pip3 install pytest
 RUN pip3 install django-pytest
+RUN pip3 install djangorestframework
 
 # Copy code & configuration into image
 COPY tonetutor /tonetutor/tonetutor/

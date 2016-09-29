@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'django_user_agents',
 
     'sitetree',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE_CLASSES = [
