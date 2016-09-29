@@ -8,7 +8,7 @@ django-user_agents==0.3.0
 django-registration==2.1.2
 
 /tonetutor/docker/hanzi-basics-1.1.2.tar.gz # Dependency of tonerecorder
-/tonetutor/docker/tonerecorder-1.1.1.tar.gz # For RecordedSyllable model.
+/tonetutor/docker/tonerecorder-1.1.2.tar.gz # For RecordedSyllable model.
 
 /tonetutor/docker/dependencies/ttlib-0.2.2.tar.gz
 /tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
