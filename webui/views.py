@@ -1,18 +1,15 @@
 # coding=utf-8
 import calendar
 import datetime
+from hashlib import md5
 import json
 from logging import getLogger
 import os
 from pprint import pprint
-import random
 import re
-import time
-import uuid
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, AnonymousUser
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.core.files.temp import NamedTemporaryFile
 from django.http import HttpResponse
@@ -22,15 +19,14 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.views.generic.base import View
-from gunicorn.http.wsgi import Response
 from hanzi_basics.models import PinyinSyllable
 from rest_framework.authtoken.models import Token
 import scipy.io.wavfile
 import stripe
 from syllable_samples.interface import get_random_sample
-from tonerecorder.models import RecordedSyllable, create_audio_path
+from tonerecorder.models import RecordedSyllable
 from ttlib.characteristics.interface import generate_all_characteristics
-from ttlib.normalization.interface import normalize_pipeline
+from ttlib.normalization.interface import normalize_pipeline, convert_file_format
 from ttlib.recognizer import ToneRecognizer
 
 from usermgmt.functions import allowed_tutor
@@ -96,6 +92,7 @@ class ToneCheck(View):
             'status' is a boolean indicating if the call was successful.
             'tone' is an integer 1-5 indicating the tone or null indicating that the predictor
                 can't tell which tone it is.
+            'attempt_url' is a url (without protocol/domain) to an mp3 file of the attempt.
     '''
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -109,17 +106,31 @@ class ToneCheck(View):
         extension = request.POST['extension']
         expected_sound = request.POST['expected_sound']
         expected_tone = request.POST['expected_tone']
-        is_native = request.POST.get('is_native', False)
+        is_native_text = request.POST.get('is_native', 'false')
+        is_native = False if is_native_text.lower() == 'false' else True
 
         user = Token.objects.get(key=auth_token).user
 
         s = PinyinSyllable.objects.get(sound=expected_sound, tone=expected_tone)
         rs = RecordedSyllable(native=is_native, user=user, syllable=s, file_extension=extension)
         original_path = rs.create_audio_path('original')
-        rs.audio_original = original_path
-        rs.save()
+
+        attempt_data = attempt.read()
+        m = md5()
+        m.update(attempt_data)
+        attempt_md5 = m.hexdigest()
+        attempt_claimed_md5 = request.POST.get('attempt_md5', '')
+
+        logger.info('MD5 Claimed: {}, Actual: {}'.format(attempt_claimed_md5, attempt_md5))
+
         with open(original_path, 'wb') as f:
-            f.write(attempt.read())
+            f.write(attempt_data)
+
+        rs.audio_original = original_path
+        mp3_path = rs.create_audio_path('mp3')
+        convert_file_format(original_path, mp3_path)
+        rs.audio_mp3 = mp3_path
+        rs.save()
 
         with open(original_path, 'rb') as original:
             with NamedTemporaryFile(suffix='.wav') as normalized:
@@ -140,9 +151,12 @@ class ToneCheck(View):
                     tr = ToneRecognizer()
                     tone = tr.get_tone(sample_characteristics)
 
+        mp3_filename = os.path.basename(mp3_path)
+        mp3_url_path = os.path.join(settings.MEDIA_URL, settings.SYLLABLE_AUDIO_DIR, mp3_filename)
         result = {
             'status': True,
-            'tone': tone
+            'tone': tone,
+            'attempt_path': mp3_url_path,
         }
         return HttpResponse(json.dumps(result))
 

@@ -46,3 +46,8 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
+    from django.views.static import serve
+    urlpatterns += [url(
+        r'^media/(?P<path>.*)$'.format(settings.MEDIA_URL), serve,
+        {'document_root': settings.MEDIA_ROOT}
+    )]
