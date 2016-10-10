@@ -158,7 +158,8 @@ class ToneCheck(View):
             'tone': tone,
             'attempt_path': mp3_url_path,
         }
-        return HttpResponse(json.dumps(result))
+        resp = HttpResponse(json.dumps(result))
+        return resp
 
 
 class GetSyllableView(View):
