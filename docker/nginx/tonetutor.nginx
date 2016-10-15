@@ -1,16 +1,16 @@
 upstream app_server_tonetutor {
-        # For a TCP configuration:
-        server 127.0.0.1:8001 fail_timeout=0;
+    # For a TCP configuration:
+    server 127.0.0.1:8001 fail_timeout=0;
 }
 
 server {
     listen [::]:80 default_server ipv6only=off;
     server_name _;
 
-	client_max_body_size 4G;	
-	keepalive_timeout 5;
+    client_max_body_size 4G;
+    keepalive_timeout 5;
 
-	location /static/ {
+    location /static/ {
         autoindex on;
         alias /tonetutor-static/;
     }

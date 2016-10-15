@@ -1,16 +1,21 @@
-# Set up Gunicorn upstream for NBTop5 site (@see nbtop5_docker.service)
-upstream app_server_tonetutor {
-        # server unix:/tmp/gunicorn.sock fail_timeout=0;
-        # For a TCP configuration:
-        server 127.0.0.1:8003 fail_timeout=0;
-}
-
-# Set up tonetutor.jivanamara.net
+# Redirect mandarintt.com -> www.mandarintt.com
 server {
     listen 66.228.38.188:80;
-    listen [::]:80;
+    listen [2600:3c03::45:8001]:80;
 
-    server_name tonetutor.jivanamara.net;
+    server_name mandarintt.com;
+
+    location / {
+        return 301 http://www.mandarintt.com$request_uri;
+    }
+}
+
+# Set up non-ssl www.mandarintt.com
+server {
+    listen 66.228.38.188:80;
+    listen [2600:3c03::45:8001]:80;
+
+    server_name www.mandarintt.com;
     client_max_body_size 4G;
     keepalive_timeout 5;
 
@@ -31,7 +36,7 @@ server {
     }
 
     location @proxy_to_app {
-        proxy_read_timeout	240;
+        proxy_read_timeout  240;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_redirect off;
@@ -39,4 +44,3 @@ server {
         proxy_pass   http://app_server_tonetutor;
     }
 }
-

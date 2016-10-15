@@ -140,7 +140,7 @@ class ToneCheck(View):
                 # minimum length (seconds)
                 min_length = 0.15
                 attempt_length = len(wave_data) / sample_rate
-                print('Attempt length {}{}: {}'.format(
+                logger.info('Attempt length {}{}: {}'.format(
                     expected_sound, expected_tone, attempt_length)
                 )
                 if attempt_length < min_length:
@@ -158,7 +158,9 @@ class ToneCheck(View):
             'tone': tone,
             'attempt_path': mp3_url_path,
         }
-        resp = HttpResponse(json.dumps(result))
+        json_result = json.dumps(result)
+        logger.debug(json_result)
+        resp = HttpResponse(json_result)
         return resp
 
 
