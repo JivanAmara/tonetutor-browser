@@ -16,11 +16,12 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from tonetutor.views import EmailUsernameRegistrationView
+from grader.views import GraderView
 from tonetutor.forms import EmailUsernameAuthenticationForm
+from tonetutor.views import EmailUsernameRegistrationView
 from usermgmt.views import UserProfileView, SetColorThemeView
 from webui.views import TutorView, ToneCheck, GetSyllableView, HomePageView, SubscriptionView, \
     PaymentSuccessView, VersionView, CampaignBrowserDetails, HelpView
@@ -42,6 +43,7 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='tonetutor_subscription'),
     url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='tonetutor_payment-success'),
+    url(r'^grader/?$', GraderView.as_view(), name='tonetutor_grader'),
 ]
 
 if settings.DEBUG:

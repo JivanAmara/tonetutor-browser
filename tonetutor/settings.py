@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'webui',
     'syllable_samples',
     'django_user_agents',
+    'grader',
 
     'sitetree',
     'rest_framework.authtoken',
