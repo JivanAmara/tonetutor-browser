@@ -1,6 +1,5 @@
-FROM phusion/baseimage
+FROM phusion-updated-apt:2017-03-07
 
-RUN apt-get update
 RUN apt-get install -y python3-pip
 RUN pip3 install --upgrade pip
 
@@ -30,10 +29,6 @@ RUN pip3 install django
 RUN pip3 install mutagen
 RUN pip3 install pytaglib
 RUN pip3 install django-user_agents==0.3.0
-RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.3.tar.gz
-RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
-RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
-RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.3.tar.gz
 RUN pip3 install psycopg2
 RUN pip3 install gunicorn
 RUN pip3 install django-registration==2.1.2
@@ -42,6 +37,10 @@ RUN pip3 install django-sitetree
 RUN pip3 install pytest
 RUN pip3 install django-pytest
 RUN pip3 install djangorestframework
+RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.3.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.5.dev2.tar.gz
 
 # Copy code & configuration into image
 COPY tonetutor /tonetutor/tonetutor/

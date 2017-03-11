@@ -1,10 +1,7 @@
 import os
-import random
 
 from django.conf import settings
-from django.http.response import HttpResponse
-from django.shortcuts import render
-from django.views.generic import View, TemplateView
+from django.views.generic import TemplateView
 from tonerecorder.models import RecordedSyllable
 from logging import getLogger
 logger = getLogger(__name__)

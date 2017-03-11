@@ -19,7 +19,6 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from grader.views import GraderView
 from tonetutor.forms import EmailUsernameAuthenticationForm
 from tonetutor.views import EmailUsernameRegistrationView
 from usermgmt.views import UserProfileView, SetColorThemeView
@@ -43,7 +42,6 @@ urlpatterns = [
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^subscription/?$', SubscriptionView.as_view(), name='tonetutor_subscription'),
     url(r'^payment-success/?$', PaymentSuccessView.as_view(), name='tonetutor_payment-success'),
-    url(r'^grader/?$', GraderView.as_view(), name='tonetutor_grader'),
 ]
 
 if settings.DEBUG:
