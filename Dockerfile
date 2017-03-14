@@ -40,7 +40,7 @@ RUN pip3 install djangorestframework
 RUN pip3 install /tonetutor/docker/dependencies/ttlib-0.2.3.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/syllable-samples-0.2.1.tar.gz
 RUN pip3 install /tonetutor/docker/dependencies/hanzi-basics-1.1.2.tar.gz
-RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.5.dev2.tar.gz
+RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.6.tar.gz
 
 # Copy code & configuration into image
 COPY tonetutor /tonetutor/tonetutor/
