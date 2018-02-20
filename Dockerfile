@@ -49,7 +49,7 @@ RUN pip3 install git+git://github.com/jivanamara/tonerecorder@v1.1.6#egg=tonerec
 #RUN pip3 install /tonetutor/docker/dependencies/tonerecorder-1.1.6.tar.gz
 RUN pip3 install git+git://github.com/jivanamara/tonetutor-webapi@v0.3.6#egg=tonetutor-webapi==0.3.6
 #RUN pip3 install /tonetutor/docker/dependencies/tonetutor_webapi-0.0.1.tar.gz
-RUN pip3 install git+git://github.com/jivanamara/tonetutor-usermgmt@v0.4.1#egg=tonetutor-usermgmt==0.4.1
+RUN pip3 install git+git://github.com/jivanamara/tonetutor-usermgmt@v0.4.2#egg=tonetutor-usermgmt==0.4.1
 
 # Copy code & configuration into image
 COPY tonetutor /tonetutor/tonetutor/
