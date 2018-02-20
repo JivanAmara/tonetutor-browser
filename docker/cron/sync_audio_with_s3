@@ -1,0 +1,2 @@
+# 09:15UTC is 02:15PDT
+15 9 * * * root /scripts/sync_audio_with_s3 /var/log/sync_audio_with_s3.log

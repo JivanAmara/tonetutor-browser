@@ -71,6 +71,9 @@ INSTALLED_APPS = [
     'tonerecorder',
     'hanzi_basics',
 
+    # This is just to allow cascading deletes of webapi models during database curation
+    'webapi',
+
     'webui',
     'syllable_samples',
     'django_user_agents',
@@ -173,11 +176,15 @@ STATIC_ROOT = '/tonetutor-static/'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': { 'format': '%(levelname)s %(filename)s:%(lineno)d %(funcName)s() - %(message)s' },
+    },
     'handlers': {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
             'filename': LOG_FILEPATH,
+            'formatter': 'verbose',
         },
     },
     'loggers': {

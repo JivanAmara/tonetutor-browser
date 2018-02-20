@@ -1,0 +1,16 @@
+#!/bin/bash
+# Grab environment variables passed to container when it started (aws-cli needs AWS key/key id/default region)
+source /etc/container_environment.sh
+
+pushd /tonetutor/ 2>&1 > /dev/null
+
+# Get any new pipeline audio
+echo 'Getting any new processed audio files from s3.' 2>&1 >> $1
+aws s3 sync s3://ttaf-0/ /mnt/data-volume/tonetutor-media/audio-files/ 2>&1 >> $1
+xvfb-run -a python3 manage.py load_archive /mnt/data-volume/tonetutor-media/audio-files/ 2>&1 >> $1
+xvfb-run -a python3 manage.py curate_db 2>&1 >> $1
+xvfb-run -a python3 manage.py dump_archive /mnt/data-volume/tonetutor-media/audio-files/ 2>&1 >> $1
+echo 'Sending any new recordings to s3 & deleting any files not found locally.' 2>&1 >> $1
+aws s3 sync --delete /mnt/data-volume/tonetutor-media/audio-files/ s3://ttaf-0/ 2>&1 >> $1
+
+popd 2>&1 > /dev/null
